@@ -24,7 +24,7 @@ def createMatrice(boardNumbers, dificulty):
     numList = []
 
     if dificulty == 3:
-        interval = 0
+        interval = 30
     elif dificulty == 4:
         interval = 60
     elif dificulty == 5:
