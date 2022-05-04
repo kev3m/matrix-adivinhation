@@ -1,27 +1,27 @@
 import random
 
 
-def receberConfiguracoes(quantTabuleiros,dificuldade, encerramento, rodadas) :
-    if quantTabuleiros == 1:
-        gameConfigs['Tabuleiros'] = 1
-    elif quantTabuleiros == 2:
-        gameConfigs['Tabuleiros'] = 2
-    else:
-        return 'O jogo só pode ser jogado com 1 ou 2 tabuleiros! Digite uma quantidade válida.'
+# def receberConfiguracoes(quantTabuleiros,dificuldade, encerramento, rodadas) :
+#     if quantTabuleiros == 1:
+#         gameConfigs['Tabuleiros'] = 1
+#     elif quantTabuleiros == 2:
+#         gameConfigs['Tabuleiros'] = 2
+#     else:
+#         return 'O jogo só pode ser jogado com 1 ou 2 tabuleiros! Digite uma quantidade válida.'
 
-    if dificuldade == 'F':
-        gameConfigs['Dificuldade'] = 3
-    elif dificuldade == 'M':
-        gameConfigs['Dificuldade'] = 4
-    elif dificuldade == 'D':
-        gameConfigs['Dificuldade'] = 5
+#     if dificuldade == 'F':
+#         gameConfigs['Dificuldade'] = 3
+#     elif dificuldade == 'M':
+#         gameConfigs['Dificuldade'] = 4
+#     elif dificuldade == 'D':
+#         gameConfigs['Dificuldade'] = 5
     
-    if encerramento == 1:
-        gameConfigs['Encerrar'].append(encerramento)
-        gameConfigs['Encerrar'].append(rodadas)
-    elif encerramento == 2:
-        gameConfigs['Encerrar'] = encerramento
-    return quantTabuleiros, dificuldade, encerramento, rodadas
+#     if encerramento == 1:
+#         gameConfigs['Encerrar'].append(encerramento)
+#         gameConfigs['Encerrar'].append(rodadas)
+#     elif encerramento == 2:
+#         gameConfigs['Encerrar'] = encerramento
+#     return quantTabuleiros, dificuldade, encerramento, rodadas
 
 
 def createMatrice(boardNumbers, difficulty):
@@ -57,11 +57,11 @@ def createMatrice(boardNumbers, difficulty):
     return matrice, secondMatrice
     
           
-# tab = int(input('a> '))
-# dif = int(input('b> '))
-# board, board2 = createMatrice(tab,dif)
-# print(board)
-# print(board2)
+tab = int(input('a> '))
+dif = int(input('b> '))
+board, board2 = createMatrice(tab,dif)
+print(board)
+print(board2)
 
 def somarMatriz(boardNumbers, difficulty):
     c1,c2,c3 = (board[0][0] + board[1][0] + board[2][0]), (board[0][1] + board[1][1] + board[2][1]), (board[0][2] + board[1][2] + board[2][2])
@@ -108,3 +108,17 @@ def somarMatriz(boardNumbers, difficulty):
             ,'ColunasT2': [c_1,c_2,c_3,c_4,c_5], 'LinhasT2': [l_1,l_2,l_3,l_4,l_5]}           
     return somasTab
 
+def fakeMatriz(boardNumbers,fakeboard):
+    if boardNumbers == 1:
+        falsaMatriz = fakeboard.copy()
+    return falsaMatriz
+
+fakemat = (fakeMatriz(tab, board))
+
+for i in fakemat:
+   
+
+        
+
+# print(f"Falsa matriz{fakeMatriz(tab, board)}")
+print(f"Falsa matriz{fakemat}")
