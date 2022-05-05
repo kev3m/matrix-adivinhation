@@ -41,12 +41,13 @@ def createMatrice(boardNumbers, difficulty):
     
     matrice = []
     secondMatrice = []
-
+    
     for i in range(difficulty):
             numbers = random.sample(numList, difficulty)
             for j in numbers:
                 numList.pop(numList.index(j))
             matrice.append(numbers)
+
 
     if boardNumbers == 2:
         for i in range(difficulty):
@@ -56,12 +57,37 @@ def createMatrice(boardNumbers, difficulty):
             secondMatrice.append(numbers)
     return matrice, secondMatrice
     
-          
-tab = int(input('a> '))
-dif = int(input('b> '))
-board, board2 = createMatrice(tab,dif)
-print(board)
-print(board2)
+def fakeMatrice(difficulty):
+    fakeMatriz = []
+
+    for i in range(difficulty):
+        invVar = []
+        for j in range(difficulty):
+            invVar.append(0)
+        fakeMatriz.append(invVar)
+    return fakeMatriz          
+
+def roundWinner(p1P,p1Sum, p2P, p2Sum,sumtab):
+    if p1P == 'c1' or p2P == 'c1':
+        p1P,p2P = sumtab['Colunas'][0][0],sumtab['Colunas'][0][0]
+    elif p1P == 'c2' or p2P =='c2':
+        p1P,p2P = sumtab['Colunas'][0][1],sumtab['Colunas'][0][1]
+    elif p1P == 'c3' or p2P =='c3':
+        p1P,p2P = sumtab['Colunas'][0][2],sumtab['Colunas'][0][2]
+    elif p1P == 'c4' or p2P =='c4':
+        p1P,p2P = sumtab['Colunas'][0][3].sumtab['Colunas'][0][3]
+    elif p1P == 'c5' or p2P =='c5':
+        p1P,p2P = sumtab['Colunas'][0][4],sumtab['Colunas'][0][4]
+
+    if p1P > p1Sum:
+        p1P = [p1P,(p1P - p1Sum)]
+    elif p1P < p1Sum:
+        p1P = [p1P,(p1Sum - p1P)]
+
+
+        
+
+
 
 def somarMatriz(boardNumbers, difficulty):
     c1,c2,c3 = (board[0][0] + board[1][0] + board[2][0]), (board[0][1] + board[1][1] + board[2][1]), (board[0][2] + board[1][2] + board[2][2])
@@ -108,17 +134,10 @@ def somarMatriz(boardNumbers, difficulty):
             ,'ColunasT2': [c_1,c_2,c_3,c_4,c_5], 'LinhasT2': [l_1,l_2,l_3,l_4,l_5]}           
     return somasTab
 
-def fakeMatriz(boardNumbers,fakeboard):
-    if boardNumbers == 1:
-        falsaMatriz = fakeboard.copy()
-    return falsaMatriz
-
-fakemat = (fakeMatriz(tab, board))
-
-for i in fakemat:
-   
-
-        
-
-# print(f"Falsa matriz{fakeMatriz(tab, board)}")
-print(f"Falsa matriz{fakemat}")
+tab = int(input('a> '))
+dif = int(input('b> '))
+board, board2 = createMatrice(tab,dif)
+fakeMatriz = fakeMatrice(dif)
+print(board)
+print(board2)
+print(fakeMatriz)

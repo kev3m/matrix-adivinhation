@@ -1,4 +1,7 @@
-import random 
-lista = [1,2,3]
+p1 = 10
+p2 = 5
 
-print(random.sample(lista, 2))
+if p1 > 3:
+    p1 = [1,(10+10)]
+
+print(p1, p2)

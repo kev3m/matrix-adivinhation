@@ -56,7 +56,15 @@ def createMatrice(boardNumbers, difficulty):
                 copyofNumList.pop(copyofNumList.index(j))
             secondMatrice.append(numbers)
     return matrice, secondMatrice
+def createFakeMatrice(difficulty):
+    fakeMatriz = []
 
+    for i in range(difficulty):
+        invVar = []
+        for j in range(difficulty):
+            invVar.append(0)
+        fakeMatriz.append(invVar)
+    return fakeMatriz       
 
 def somarMatriz(boardNumbers, difficulty):
     c1,c2,c3 = (board[0][0] + board[1][0] + board[2][0]), (board[0][1] + board[1][1] + board[2][1]), (board[0][2] + board[1][2] + board[2][2])
@@ -153,6 +161,7 @@ while menu != 3:
     #Retornando as configurações para o dicionário
     receberConfiguracoes(quantTab, dificuldade,finalizar, numRodadas)
     board, board2 = createMatrice(quantTab,dificuldade)
+    fakeMatrice = createFakeMatrice(dificuldade)
     jogador1Nick = input('''
 ================================  
 Digite o nickname do jogador 1
@@ -171,8 +180,26 @@ Digite o nickname do jogador 2
         print(f'''O jogo foi iniciado com um tabuleiro para dois jogadores
         Boa sorte {gameStats['Jogador 1'][0][1]} e {gameStats['Jogador 2'][0][1]}''')
         #if gameConfigs['Encerrar'] == 2:
-                    
+        print(f'''
+======Tabela guia para escolha das opções======
+-------------
+| x | x | x | > l1
+| x | x | x | > l2
+| x | x | x | > l3 
+-------------
+^   ^   ^
+c1  c2  c3
+''')    
+        p1Play = input(f'''{gameStats['Jogador 1'][0][1]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+        p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][1]} | Digite o valor que deseja chutar: '''))
+        p2Play = input(f'''{gameStats['Jogador 2'][0][1]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+        p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][1]} | Digite o valor que deseja chutar: '''))
 
+        
+
+
+
+        
 
 
 
