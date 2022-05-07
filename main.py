@@ -111,7 +111,7 @@ def somarMatriz(boardNumbers, difficulty):
             ,'ColunasT2': [c_1,c_2,c_3,c_4,c_5], 'LinhasT2': [l_1,l_2,l_3,l_4,l_5]}           
     return somasTab
 
-def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
+def atribuirValoresTabela(p1P, p2P,sumtab):
     if p1P == 'c1':
         p1P = sumtab['Colunas'][0]
     elif p1P == 'c2':
@@ -152,19 +152,20 @@ def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
     elif p2P == 'l4':
         p2P = sumtab['Linhas'][3]
     elif p2P == 'l5':
-        p2P = sumtab['Linhas'][4]    
-    
-    if p1P > p1Sum:
+        p2P = sumtab['Linhas'][4]
+    return p1P,p2P    
+
+def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
+    if p1P > p1Sum:#Num Original | Num escolhido pelo user
         p1P = (p1P - p1Sum)
     elif p1P < p1Sum:
         p1P = (p1Sum - p1P)
-
     if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
         p2P = (p2P - p2Sum)
     elif p2P < p2Sum:
         p2P = (p2Sum - p2P)
+    #Retorna  o intervalo
     return p1P, p2P
-
 def roundWinner(p1P, p2P):
     if p1P < p2P:
         return 1
@@ -242,7 +243,7 @@ Digite o nickname do jogador 2
     #Iniciando o jogo com um tabuleiro
     if gameConfigs['Tabuleiros'] == 1:
         print(f'''O jogo foi iniciado com um tabuleiro para dois jogadores
-        Boa sorte {gameStats['Jogador 1'][0][1]} e {gameStats['Jogador 2'][0][1]}''')
+        Boa sorte {gameStats['Jogador 1'][0][0]} e {gameStats['Jogador 2'][0][0]}''')
         #if gameConfigs['Encerrar'] == 2:
         print(f'''
 ======Tabela guia para escolha das opções======
@@ -260,7 +261,8 @@ Digite o nickname do jogador 2
         p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
         sumtab = somarMatriz(quantTab, dificuldade)
-        interval1, interval2 = intervalVerifier(p1Play,p1PlaySum,p2Play,p2PlaySum,sumtab)
+        p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
+        interval1, interval2 = intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
         roundWinner = roundWinner(interval1,interval2)
         statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
         if roundWinner == 1:
@@ -277,12 +279,17 @@ Digite o nickname do jogador 2
         for i in range(len(gameStats['Jogador 1'][1][0])):
             quadPlay = gameStats['Jogador 1'][1][0][i]
             numSumPlay = gameStats['Jogador 1'][1][1][i]
-            print(f'{i + 1}º Rodada | Jogador 1 escolheu a jogada {quadPlay} de soma {numSumPlay} ')
-
+            print(f'''
+{i + 1}º Rodada | {gameStats['Jogador 1'][0][0]}
+Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
         for i in range(len(gameStats['Jogador 2'][1][0])):
             quadPlay = gameStats['Jogador 2'][1][0][i]
             numSumPlay = gameStats['Jogador 2'][1][1][i]
-            print(f'{i + 1}º Rodada | Jogador 2 escolheu a jogada {quadPlay} de soma {numSumPlay} ')
+            print(f'''
+{i + 1}º Rodada | {gameStats['Jogador 2'][0][0]}
+Escolheu a jogada {quadPlay} de soma {numSumPlay} 
+=======================================
+''')
 
 
         

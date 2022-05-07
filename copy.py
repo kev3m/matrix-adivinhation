@@ -67,7 +67,7 @@ def fakeMatrice(difficulty):
         fakeMatriz.append(invVar)
     return fakeMatriz          
 
-def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
+def atribuirValoresTabela(p1P, p2P,sumtab):
     if p1P == 'c1':
         p1P = sumtab['Colunas'][0]
     elif p1P == 'c2':
@@ -108,17 +108,19 @@ def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
     elif p2P == 'l4':
         p2P = sumtab['Linhas'][3]
     elif p2P == 'l5':
-        p2P = sumtab['Linhas'][4]    
-    
-    if p1P > p1Sum:
+        p2P = sumtab['Linhas'][4]
+    return p1P,p2P    
+
+def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
+    if p1P > p1Sum:#Num Original | Num escolhido pelo user
         p1P = (p1P - p1Sum)
     elif p1P < p1Sum:
         p1P = (p1Sum - p1P)
-
     if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
         p2P = (p2P - p2Sum)
     elif p2P < p2Sum:
         p2P = (p2Sum - p2P)
+    #Retorna  o intervalo
     return p1P, p2P
 
 def roundWinner(p1P, p2P):
@@ -126,6 +128,7 @@ def roundWinner(p1P, p2P):
         return 1
     else:
         return 2
+
     
 
 # def fakeMatrizReveal(fakeMat, realMat):
@@ -187,7 +190,10 @@ p2PlaySum = int(input(f'''p2| Digite o valor que deseja chutar: '''))
 fakeMatriz = fakeMatrice(dif)
 board, board2 = createMatrice(tab,dif)
 sumtab = somarMatriz(tab,dif)
-interval1, interval2 = intervalVerifier(p1Play,p1PlaySum,p2Play,p2PlaySum,sumtab)
+#mudar parametros
+p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
+interval1, interval2 = intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
+
 roundWinner = roundWinner(interval1,interval2)
 
 
@@ -196,6 +202,7 @@ print(board2)
 print(fakeMatriz)
 print(interval1)
 print(interval2)
+
 if roundWinner == 1:
     print('O jogador 1 foi o vencedor da rodada')
 elif roundWinner == 2:
