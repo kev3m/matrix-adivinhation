@@ -1,6 +1,6 @@
 import random
 gameConfigs = {'Tabuleiros': 0, 'Dificuldade': 0, 'Encerrar': []} #Dif = (F,M OU D)
-gameStats = { 'Jogador 1': [['Nome', 0],['Jogada X']], 'Jogador 2': [['Nome', 0],['Jogada X']]}
+gameStats = { 'Jogador 1': [['Nome', 0],['Jogada X', 'Soma X']], 'Jogador 2': [['Nome', 0],['Jogada Y', 'Soma Y']]}
 #Encerrar recebe uma lista contendo [X,Y] se a opção selecionadar for por rodadas, sendo X a opção e Y o número de rodadas
 
 def receberConfiguracoes(quantTabuleiros,dificuldade, encerramento, rodadas) :
@@ -90,7 +90,7 @@ def somarMatriz(boardNumbers, difficulty):
             c_4 = board2[0][3] + board2[1][3] + board2[2][3] + board2[3][3]
             l_4 = sum(board2[3]) 
             somasTab['ColunasT2'].append(c_4), somasTab['LinhasT2'].append(l_4)     
-    elif dif == 5:
+    elif difficulty == 5:
         c1 += board[3][0] + board[4][0]
         c2 += board[3][1] + board[4][1]
         c3 += board[3][2] + board[4][2]
@@ -111,6 +111,46 @@ def somarMatriz(boardNumbers, difficulty):
             ,'ColunasT2': [c_1,c_2,c_3,c_4,c_5], 'LinhasT2': [l_1,l_2,l_3,l_4,l_5]}           
     return somasTab
 
+def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
+    if p1P == 'c1':
+        p1P = sumtab['Colunas'][0]
+    elif p1P == 'c2':
+        p1P = sumtab['Colunas'][1]
+    elif p1P == 'c3':
+        p1P = sumtab['Colunas'][2]
+    elif p1P == 'c4':
+        p1P = sumtab['Colunas'][3]
+    elif p1P == 'c5':
+        p1P = sumtab['Colunas'][4]
+
+    if p2P == 'c1':
+        p2P = sumtab['Colunas'][0]
+    elif p2P =='c2':
+        p2P = sumtab['Colunas'][1]
+    elif p2P =='c3':
+        p2P = sumtab['Colunas'][2]
+    elif p2P =='c4':
+        p2P = sumtab['Colunas'][3]
+    elif p2P =='c5':
+        p2P = sumtab['Colunas'][4]
+    
+
+    if p1P > p1Sum:
+        p1P = (p1P - p1Sum)
+    elif p1P < p1Sum:
+        p1P = (p1Sum - p1P)
+
+    if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
+        p2P = (p2P - p2Sum)
+    elif p2P < p2Sum:
+        p2P = (p2Sum - p2P)
+    return p1P, p2P
+
+def roundWinner(p1P, p2P):
+    if p1P < p2P:
+        return 1
+    else:
+        return 2
 
 #Iniciando o game
 menu = int(input('''
@@ -167,13 +207,13 @@ while menu != 3:
 Digite o nickname do jogador 1
 ================================  
 ''')
-    gameStats['Jogador 1'][0][1] = jogador1Nick
+    gameStats['Jogador 1'][0][0] = jogador1Nick
     jogador2Nick = input('''
 ================================  
 Digite o nickname do jogador 2
 ================================  
 ''')
-    gameStats['Jogador 2'][0][1] = jogador2Nick
+    gameStats['Jogador 2'][0][0] = jogador2Nick
     menu = 3
     #Iniciando o jogo com um tabuleiro
     if gameConfigs['Tabuleiros'] == 1:
@@ -187,16 +227,24 @@ Digite o nickname do jogador 2
 | x | x | x | > l2
 | x | x | x | > l3 
 -------------
-^   ^   ^
-c1  c2  c3
+  ^   ^   ^
+  c1  c2  c3
 ''')    
-        p1Play = input(f'''{gameStats['Jogador 1'][0][1]} | Digite a linha ou coluna que deseja chutar o valor: ''')
-        p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][1]} | Digite o valor que deseja chutar: '''))
-        p2Play = input(f'''{gameStats['Jogador 2'][0][1]} | Digite a linha ou coluna que deseja chutar o valor: ''')
-        p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][1]} | Digite o valor que deseja chutar: '''))
-
+        p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+        p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
+        p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+        p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
+        sumtab = somarMatriz(quantTab, dificuldade)
         
+        interval1, interval2 = intervalVerifier(p1Play,p1PlaySum,p2Play,p2PlaySum,sumtab)
+        roundWinner = roundWinner(interval1,interval2)
 
+        if roundWinner == 1:
+            print('O jogador 1 foi o vencedor da rodada')
+            gameStats['Jogador 1'][0][1] += 1
+        elif roundWinner== 2:
+            print('O jogador 2 foi o vencedor da rodada')
+            gameStats['Jogador 2'][0][1] += 1
 
 
         

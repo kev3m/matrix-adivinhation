@@ -67,25 +67,70 @@ def fakeMatrice(difficulty):
         fakeMatriz.append(invVar)
     return fakeMatriz          
 
-def roundWinner(p1P,p1Sum, p2P, p2Sum,sumtab):
-    if p1P == 'c1' or p2P == 'c1':
-        p1P,p2P = sumtab['Colunas'][0][0],sumtab['Colunas'][0][0]
-    elif p1P == 'c2' or p2P =='c2':
-        p1P,p2P = sumtab['Colunas'][0][1],sumtab['Colunas'][0][1]
-    elif p1P == 'c3' or p2P =='c3':
-        p1P,p2P = sumtab['Colunas'][0][2],sumtab['Colunas'][0][2]
-    elif p1P == 'c4' or p2P =='c4':
-        p1P,p2P = sumtab['Colunas'][0][3].sumtab['Colunas'][0][3]
-    elif p1P == 'c5' or p2P =='c5':
-        p1P,p2P = sumtab['Colunas'][0][4],sumtab['Colunas'][0][4]
+def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
+    # if p1P in sumtab['Colunas']:
+    #     p1P = sumtab['Colunas'][sumtab['Colunas'].index(p1P)]
+    # if p2P in sumtab['Colunas']:
+    #     p2P = sumtab['Colunas'][sumtab['Colunas'].index(p2P)]
+    if p1P == 'c1':
+        p1P = sumtab['Colunas'][0]
+    elif p1P == 'c2':
+        p1P = sumtab['Colunas'][1]
+    elif p1P == 'c3':
+        p1P = sumtab['Colunas'][2]
+    elif p1P == 'c4':
+        p1P = sumtab['Colunas'][3]
+    elif p1P == 'c5':
+        p1P = sumtab['Colunas'][4]
+    elif p1P == 'l1':
+        p1P = sumtab['Linhas'][0]
+    elif p1P == 'l2':
+        p1P = sumtab['Linhas'][1]
+    elif p1P == 'l3':
+        p1P = sumtab['Linhas'][2]
+    elif p1P == 'l4':
+        p1P = sumtab['Linhas'][3]
+    elif p1P == 'l5':
+        p1P = sumtab['Linhas'][4]
 
+    if p2P == 'c1':
+        p2P = sumtab['Colunas'][0]
+    elif p2P =='c2':
+        p2P = sumtab['Colunas'][1]
+    elif p2P =='c3':
+        p2P = sumtab['Colunas'][2]
+    elif p2P =='c4':
+        p2P = sumtab['Colunas'][3]
+    elif p2P =='c5':
+        p2P = sumtab['Colunas'][4]
+    elif p2P == 'l1':
+        p2P = sumtab['Linhas'][0]
+    elif p2P == 'l2':
+        p2P = sumtab['Linhas'][1]
+    elif p2P == 'l3':
+        p2P = sumtab['Linhas'][2]
+    elif p2P == 'l4':
+        p2P = sumtab['Linhas'][3]
+    elif p2P == 'l5':
+        p2P = sumtab['Linhas'][4]    
+    
     if p1P > p1Sum:
-        p1P = [p1P,(p1P - p1Sum)]
+        p1P = (p1P - p1Sum)
     elif p1P < p1Sum:
-        p1P = [p1P,(p1Sum - p1P)]
+        p1P = (p1Sum - p1P)
 
+    if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
+        p2P = (p2P - p2Sum)
+    elif p2P < p2Sum:
+        p2P = (p2Sum - p2P)
+    return p1P, p2P
 
-        
+def roundWinner(p1P, p2P):
+    if p1P < p2P:
+        return 1
+    else:
+        return 2
+    
 
 
 
@@ -136,8 +181,27 @@ def somarMatriz(boardNumbers, difficulty):
 
 tab = int(input('a> '))
 dif = int(input('b> '))
-board, board2 = createMatrice(tab,dif)
+
+
+p1Play = input('''p1| Digite a linha ou coluna que deseja chutar o valor: ''')
+p1PlaySum = int(input('''p1| Digite o valor que deseja chutar: '''))
+p2Play = input(f'''p2| Digite a linha ou coluna que deseja chutar o valor: ''')
+p2PlaySum = int(input(f'''p2| Digite o valor que deseja chutar: '''))
 fakeMatriz = fakeMatrice(dif)
+board, board2 = createMatrice(tab,dif)
+sumtab = somarMatriz(tab,dif)
+interval1, interval2 = intervalVerifier(p1Play,p1PlaySum,p2Play,p2PlaySum,sumtab)
+roundWinner = roundWinner(interval1,interval2)
+
+
 print(board)
 print(board2)
 print(fakeMatriz)
+print(interval1)
+print(interval2)
+if roundWinner == 1:
+    print('O jogador 1 foi o vencedor da rodada')
+elif roundWinner == 2:
+    print('O jogador 2 foi o vencedor da rodada')
+
+print(roundWinner)

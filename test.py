@@ -1,7 +1,8 @@
-p1 = 10
-p2 = 5
+lista = [1,2,3]
+c1,c2,c3 = 20,50,40
 
-if p1 > 3:
-    p1 = [1,(10+10)]
+sexo = {'Colunas': [c1,c2,c3]}
+test = input('test> ')
 
-print(p1, p2)
+if test in sexo['Colunas']:
+    print('Quantos kg de sexo?')
