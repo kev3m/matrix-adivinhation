@@ -1,6 +1,6 @@
 import random
 gameConfigs = {'Tabuleiros': 0, 'Dificuldade': 0, 'Encerrar': []} #Dif = (F,M OU D)
-gameStats = { 'Jogador 1': [['Nome', 0],['Jogada X', 'Soma X']], 'Jogador 2': [['Nome', 0],['Jogada Y', 'Soma Y']]}
+gameStats = { 'Jogador 1': [['Nome', 0],[[], []]], 'Jogador 2': [['Nome', 0],[[], []]]}
 #Encerrar recebe uma lista contendo [X,Y] se a opção selecionadar for por rodadas, sendo X a opção e Y o número de rodadas
 
 def receberConfiguracoes(quantTabuleiros,dificuldade, encerramento, rodadas) :
@@ -122,6 +122,16 @@ def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
         p1P = sumtab['Colunas'][3]
     elif p1P == 'c5':
         p1P = sumtab['Colunas'][4]
+    elif p1P == 'l1':
+        p1P = sumtab['Linhas'][0]
+    elif p1P == 'l2':
+        p1P = sumtab['Linhas'][1]
+    elif p1P == 'l3':
+        p1P = sumtab['Linhas'][2]
+    elif p1P == 'l4':
+        p1P = sumtab['Linhas'][3]
+    elif p1P == 'l5':
+        p1P = sumtab['Linhas'][4]
 
     if p2P == 'c1':
         p2P = sumtab['Colunas'][0]
@@ -133,8 +143,17 @@ def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
         p2P = sumtab['Colunas'][3]
     elif p2P =='c5':
         p2P = sumtab['Colunas'][4]
+    elif p2P == 'l1':
+        p2P = sumtab['Linhas'][0]
+    elif p2P == 'l2':
+        p2P = sumtab['Linhas'][1]
+    elif p2P == 'l3':
+        p2P = sumtab['Linhas'][2]
+    elif p2P == 'l4':
+        p2P = sumtab['Linhas'][3]
+    elif p2P == 'l5':
+        p2P = sumtab['Linhas'][4]    
     
-
     if p1P > p1Sum:
         p1P = (p1P - p1Sum)
     elif p1P < p1Sum:
@@ -151,6 +170,11 @@ def roundWinner(p1P, p2P):
         return 1
     else:
         return 2
+def statusReceiver(p1P,p1Sum, p2P, p2Sum,statsTab):
+    statsTab['Jogador 1'][1][0].append(p1P)
+    statsTab['Jogador 1'][1][1].append(p1Sum)
+    statsTab['Jogador 2'][1][0].append(p2P)
+    statsTab['Jogador 2'][1][1].append(p2Sum)
 
 #Iniciando o game
 menu = int(input('''
@@ -234,17 +258,31 @@ Digite o nickname do jogador 2
         p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
         p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
         p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
+
         sumtab = somarMatriz(quantTab, dificuldade)
-        
         interval1, interval2 = intervalVerifier(p1Play,p1PlaySum,p2Play,p2PlaySum,sumtab)
         roundWinner = roundWinner(interval1,interval2)
-
+        statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
         if roundWinner == 1:
             print('O jogador 1 foi o vencedor da rodada')
             gameStats['Jogador 1'][0][1] += 1
         elif roundWinner== 2:
             print('O jogador 2 foi o vencedor da rodada')
             gameStats['Jogador 2'][0][1] += 1
+        print(f'''
+===========Status da rodada===========
+{gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
+{gameStats['Jogador 2'][0][0]} | Possui {gameStats['Jogador 2'][0][1]} Casas Reveladas       
+        ''')
+        for i in range(len(gameStats['Jogador 1'][1][0])):
+            quadPlay = gameStats['Jogador 1'][1][0][i]
+            numSumPlay = gameStats['Jogador 1'][1][1][i]
+            print(f'{i + 1}º Rodada | Jogador 1 escolheu a jogada {quadPlay} de soma {numSumPlay} ')
+
+        for i in range(len(gameStats['Jogador 2'][1][0])):
+            quadPlay = gameStats['Jogador 2'][1][0][i]
+            numSumPlay = gameStats['Jogador 2'][1][1][i]
+            print(f'{i + 1}º Rodada | Jogador 2 escolheu a jogada {quadPlay} de soma {numSumPlay} ')
 
 
         

@@ -68,10 +68,6 @@ def fakeMatrice(difficulty):
     return fakeMatriz          
 
 def intervalVerifier(p1P,p1Sum, p2P, p2Sum,sumtab):
-    # if p1P in sumtab['Colunas']:
-    #     p1P = sumtab['Colunas'][sumtab['Colunas'].index(p1P)]
-    # if p2P in sumtab['Colunas']:
-    #     p2P = sumtab['Colunas'][sumtab['Colunas'].index(p2P)]
     if p1P == 'c1':
         p1P = sumtab['Colunas'][0]
     elif p1P == 'c2':
@@ -132,6 +128,7 @@ def roundWinner(p1P, p2P):
         return 2
     
 
+# def fakeMatrizReveal(fakeMat, realMat):
 
 
 def somarMatriz(boardNumbers, difficulty):
