@@ -65,6 +65,22 @@ def createFakeMatrice(difficulty):
             invVar.append(0)
         fakeMatriz.append(invVar)
     return fakeMatriz       
+def createColumns(mat1, mat2):
+    colunas = []
+    colunas2 = []
+    for i in range(len(mat1)):
+        col = []
+        for j in mat1:
+            col.append(j[i])
+        colunas.append(col)
+
+    for i in range(len(mat2)):
+        col = []
+        for j in mat2:
+            col.append(j[i])
+        colunas2.append(col)
+    return colunas, colunas2
+
 
 def somarMatriz(boardNumbers, difficulty):
     c1,c2,c3 = (board[0][0] + board[1][0] + board[2][0]), (board[0][1] + board[1][1] + board[2][1]), (board[0][2] + board[1][2] + board[2][2])
@@ -246,6 +262,7 @@ while menu != 3:
     #Retornando as configurações para o dicionário
     receberConfiguracoes(quantTab, dificuldade,finalizar, numRodadas)
     board, board2 = createMatrice(quantTab,dificuldade)
+    column, column2 = createColumns(board, board2)
     fakeMatrice = createFakeMatrice(dificuldade)
     jogador1Nick = input('''
 ================================  

@@ -66,7 +66,21 @@ def fakeMatrice(difficulty):
             invVar.append(0)
         fakeMatriz.append(invVar)
     return fakeMatriz          
+def createColumns(mat1, mat2):
+    colunas = []
+    colunas2 = []
+    for i in range(len(mat1)):
+        col = []
+        for j in mat1:
+            col.append(j[i])
+        colunas.append(col)
 
+    for i in range(len(mat2)):
+        col = []
+        for j in mat2:
+            col.append(j[i])
+        colunas2.append(col)
+    return colunas, colunas2
 def atribuirValoresTabela(p1P, p2P,sumtab):
     if p1P == 'c1':
         p1P = sumtab['Colunas'][0]
@@ -153,10 +167,9 @@ def roundWinner(p1P, p2P,maiMen1, maiMen2):
         maiMen1 = maiMen2 = 'Ambos acertaram a soma'
         return 6, maiMen1, maiMen2
 
+def tableReveal(roundwin, realtable, faketable, column, column2, p1P, p2P):#p1p e p2p são da função atribuirValores
+    if roundwin == 1:
 
-    
-
-# def fakeMatrizReveal(fakeMat, realMat,winner,):
 
 
 def somarMatriz(boardNumbers, difficulty):
@@ -214,6 +227,7 @@ p2Play = input(f'''p2| Digite a linha ou coluna que deseja chutar o valor: ''')
 p2PlaySum = int(input(f'''p2| Digite o valor que deseja chutar: '''))
 fakeMatriz = fakeMatrice(dif)
 board, board2 = createMatrice(tab,dif)
+column, column2 = createColumns(board, board2)
 sumtab = somarMatriz(tab,dif)
 #mudar parametros
 p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
@@ -224,6 +238,8 @@ roundWinner = roundWinner(interval1,interval2,maiMen1,maiMen2)
 
 print(board)
 print(board2)
+print(column)
+print(column2)
 print(fakeMatriz)
 print(interval1)
 print(interval2)
