@@ -114,24 +114,49 @@ def atribuirValoresTabela(p1P, p2P,sumtab):
 def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
     if p1P > p1Sum:#Num Original | Num escolhido pelo user
         p1P = (p1P - p1Sum)
+        maiorOumenor = False
     elif p1P < p1Sum:
         p1P = (p1Sum - p1P)
+        maiorOumenor = True
+    elif p1P == p1Sum:
+        p1P = 0
+        maiorOumenor = 'Acertou a soma'
+
     if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
         p2P = (p2P - p2Sum)
+        maiorOumenor2 = False
     elif p2P < p2Sum:
         p2P = (p2Sum - p2P)
+        maiorOumenor2 = True
+    elif p2P == p2Sum:
+        p2P = 0
+        maiorOumenor2 = 'Acertou a soma'
     #Retorna  o intervalo
-    return p1P, p2P
+    return p1P, p2P, maiorOumenor, maiorOumenor2
 
-def roundWinner(p1P, p2P):
+def roundWinner(p1P, p2P,maiMen1, maiMen2):
     if p1P < p2P:
-        return 1
-    else:
-        return 2
+        return 1, maiMen1
+    elif p1P > p2P:
+        return 2, maiMen2
+     #mesma aproximação   
+    elif p1P == p2P:
+        maiMen1 = maiMen2 = 'Mesma aproximação'
+        return 3, maiMen1, maiMen2
+    elif p1P == 0:
+        maiMen1 = 'P1 Acertou a soma'
+        return 4, maiMen1
+    elif p2P == 0:
+        maiMen2 = 'P2 Acertou a soma'
+        return 5, maiMen2
+    elif p1P == 0 and p1P == 0:
+        maiMen1 = maiMen2 = 'Ambos acertaram a soma'
+        return 6, maiMen1, maiMen2
+
 
     
 
-# def fakeMatrizReveal(fakeMat, realMat):
+# def fakeMatrizReveal(fakeMat, realMat,winner,):
 
 
 def somarMatriz(boardNumbers, difficulty):
@@ -192,9 +217,9 @@ board, board2 = createMatrice(tab,dif)
 sumtab = somarMatriz(tab,dif)
 #mudar parametros
 p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
-interval1, interval2 = intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
+interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
 
-roundWinner = roundWinner(interval1,interval2)
+roundWinner = roundWinner(interval1,interval2,maiMen1,maiMen2)
 
 
 print(board)
@@ -203,9 +228,35 @@ print(fakeMatriz)
 print(interval1)
 print(interval2)
 
-if roundWinner == 1:
+if roundWinner[0] == 1:
     print('O jogador 1 foi o vencedor da rodada')
-elif roundWinner == 2:
-    print('O jogador 2 foi o vencedor da rodada')
+    
+    if roundWinner[1] == True:
+        print('O valor chutado é maior que a soma')    
+    else:
+        print('O valor chutado é menor que a soma') 
 
+elif roundWinner[0]== 2:
+    print('O jogador 2 foi o vencedor da rodada')
+    
+    if roundWinner[1] == True:
+        print('O valor chutado é maior que a soma')    
+    else:
+        print('O valor chutado é menor que a soma') 
+
+elif roundWinner[0]== 3:
+    print('Os dois jogadores possuem a mesma aproximação, ambos ganharam!')
+    
+
+elif roundWinner[0]== 4:
+    print('O jogador 1 acertou a soma em cheio! Todas as casas serão reveladas')
+
+        #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+elif roundWinner[0]== 5:
+    print('O jogador 2 acertou a soma em cheio! Todas as casas serão reveladas')
+elif roundWinner[0]== 6:
+    print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
+        #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+        
+#Se o numero vencedor for maior = True, se for menor recebe False
 print(roundWinner)
