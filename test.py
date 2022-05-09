@@ -59,22 +59,32 @@ def createColumns(mat1, mat2):
 
 mat = [[1,2,3], [4,5,6], [7,8,9]]
 mat2 = []
+plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']]
+
 coluna1, colunas2 = createColumns(mat, mat2)
 fakemat = [[0,0,0], [0,0,0], [0,0,0]]
 print(coluna1, colunas2)
 for i in coluna1:
     print(i)
 
-play = 'c1'
+play = 'l1'
 test = True
 
 
-def returnNum(winnerPlay,maiorOumenor,coluna):
-    if winnerPlay == 'c1':
+def returnNum(winnerPlay,maiorOumenor,coluna,playsTab, matriz):
+    if winnerPlay[0] == 'c':
+        indexcolumn = playsTab[0].index(winnerPlay)
         if maiorOumenor == True:
-            swapNum = max(coluna[0])
+            swapNum = max(coluna[indexcolumn])
         elif maiorOumenor == False:
-            swapNum = min(coluna[0])
+            swapNum = min(coluna[indexcolumn])
+
+    if winnerPlay[0] == 'l':
+        indexcolumn = playsTab[1].index(winnerPlay)
+        if maiorOumenor == True:
+            swapNum = max(matriz[indexcolumn])
+        elif maiorOumenor == False:
+            swapNum = min(matriz[indexcolumn])
     return swapNum
 
 def searchindex(matriz,num):
@@ -86,9 +96,8 @@ def tableSwap(numero,fakemat,matrizInd, numInd):
     fakemat[matrizInd][numInd] = numero
     return fakemat
 
-nume = returnNum(play,test,coluna1)
+nume = returnNum(play,test,coluna1, plays, mat)
 matind, numind = searchindex(mat,nume)
-
 fakematr = tableSwap(nume,fakemat,matind,numind)
 
 for i in fakematr:

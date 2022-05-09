@@ -167,10 +167,54 @@ def roundWinner(p1P, p2P,maiMen1, maiMen2):
         maiMen1 = maiMen2 = 'Ambos acertaram a soma'
         return 6, maiMen1, maiMen2
 
-def tableReveal(roundwin, realtable, faketable, column, column2, p1P, p2P):#p1p e p2p são da função atribuirValores
-    if roundwin == 1:
+def returnWinnePlay(p1P, p2P, roundWinner, maiMen1, maiMen2):
+        if roundWinner == 1 or roundWinner == 4:
+            return p1P, maiMen1
+        elif roundWinner == 2 or roundWinner == 5:
+            return p2P, maiMen2
+        elif roundWinner == 3 or roundWinner == 6:
+            return p1P, p2P, maiMen1, maiMen2 
+            
+def returnNum(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,playsTab, matriz):
+    if winnerPlay == 1 or winnerPlay == 4:
+        if winnerPlayCase[0] == 'c':
+            indexcolumn = playsTab[0].index(winnerPlayCase)
+            if maiorOumenor == True:
+                swapNum = max(coluna[indexcolumn])
+            elif maiorOumenor == False:
+                swapNum = min(coluna[indexcolumn])
 
+        if winnerPlayCase[0] == 'l':
+            indexcolumn = playsTab[1].index(winnerPlayCase)
+            if maiorOumenor == True:
+                swapNum = max(matriz[indexcolumn])
+            elif maiorOumenor == False:
+                swapNum = min(matriz[indexcolumn])
+        return swapNum
+    elif winnerPlay == 2 or winnerPlay == 5:
+        if winnerPlayCase[0] == 'c':
+            indexcolumn = playsTab[0].index(winnerPlayCase)
+            if maiorOumenor2 == True:
+                swapNum = max(coluna[indexcolumn])
+            elif maiorOumenor2 == False:
+                swapNum = min(coluna[indexcolumn])
 
+        if winnerPlayCase[0] == 'l':
+            indexcolumn = playsTab[1].index(winnerPlayCase)
+            if maiorOumenor2 == True:
+                swapNum = max(matriz[indexcolumn])
+            elif maiorOumenor2 == False:
+                swapNum = min(matriz[indexcolumn])
+        return swapNum
+
+def searchindex(matriz,num):
+    for i in matriz:
+        if num in i:
+            return matriz.index(i), i.index(num)
+
+def tableSwap(numero,fakemat,matrizInd, numInd):
+    fakemat[matrizInd][numInd] = numero
+    return fakemat
 
 def somarMatriz(boardNumbers, difficulty):
     c1,c2,c3 = (board[0][0] + board[1][0] + board[2][0]), (board[0][1] + board[1][1] + board[2][1]), (board[0][2] + board[1][2] + board[2][2])
@@ -220,6 +264,7 @@ def somarMatriz(boardNumbers, difficulty):
 tab = int(input('a> '))
 dif = int(input('b> '))
 
+plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']]
 
 p1Play = input('''p1| Digite a linha ou coluna que deseja chutar o valor: ''')
 p1PlaySum = int(input('''p1| Digite o valor que deseja chutar: '''))
@@ -232,47 +277,50 @@ sumtab = somarMatriz(tab,dif)
 #mudar parametros
 p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
 interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
-
-roundWinner = roundWinner(interval1,interval2,maiMen1,maiMen2)
-
+roundWinner, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
+winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWinner, maiMen1, maiMen2)
+nume = returnNum(roundWinner,winnerplay,maiMen1, maiMen2,column, plays, board)
+matind, numind = searchindex(board,nume)
+fakematr = tableSwap(nume,fakeMatriz,matind,numind)
 
 print(board)
 print(board2)
 print(column)
 print(column2)
-print(fakeMatriz)
 print(interval1)
 print(interval2)
 
-if roundWinner[0] == 1:
+if roundWinner == 1:
     print('O jogador 1 foi o vencedor da rodada')
     
-    if roundWinner[1] == True:
+    if maiorOumenor == True:
         print('O valor chutado é maior que a soma')    
     else:
         print('O valor chutado é menor que a soma') 
 
-elif roundWinner[0]== 2:
+elif maiorOumenor == 2:
     print('O jogador 2 foi o vencedor da rodada')
     
-    if roundWinner[1] == True:
+    if maiorOumenor == True:
         print('O valor chutado é maior que a soma')    
     else:
         print('O valor chutado é menor que a soma') 
 
-elif roundWinner[0]== 3:
+elif maiorOumenor == 3:
     print('Os dois jogadores possuem a mesma aproximação, ambos ganharam!')
     
 
-elif roundWinner[0]== 4:
+elif maiorOumenor == 4:
     print('O jogador 1 acertou a soma em cheio! Todas as casas serão reveladas')
 
         #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
-elif roundWinner[0]== 5:
+elif maiorOumenor == 5:
     print('O jogador 2 acertou a soma em cheio! Todas as casas serão reveladas')
-elif roundWinner[0]== 6:
+elif maiorOumenor == 6:
     print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
         #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
         
 #Se o numero vencedor for maior = True, se for menor recebe False
 print(roundWinner)
+for i in fakematr:
+    print(i)
