@@ -1,5 +1,5 @@
 import random
-gameConfigs = {'Tabuleiros': 0, 'Dificuldade': 0, 'Encerrar': []} #Dif = (F,M OU D)
+gameConfigs = {'Tabuleiros': 0, 'Dificuldade': 0, 'Encerrar': 0} #Dif = (F,M OU D)
 gameStats = { 'Jogador 1': [['Nome', 0],[[], []]], 'Jogador 2': [['Nome', 0],[[], []]]}
 #Encerrar recebe uma lista contendo [X,Y] se a opção selecionadar for por rodadas, sendo X a opção e Y o número de rodadas
 
@@ -19,8 +19,7 @@ def receberConfiguracoes(quantTabuleiros,dificuldade, encerramento, rodadas) :
         gameConfigs['Dificuldade'] = 5
     
     if encerramento == 1:
-        gameConfigs['Encerrar'].append(encerramento)
-        gameConfigs['Encerrar'].append(rodadas)
+        gameConfigs['Encerrar'] = rodadas
     elif encerramento == 2:
         gameConfigs['Encerrar'] = encerramento
     return quantTabuleiros, dificuldade, encerramento, rodadas
@@ -309,6 +308,8 @@ while menu != 3:
         elif finalizar == 2:
             numRodadas = ''
     #Retornando as configurações para o dicionário
+    plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']]
+    contadorRodadas = 0
     receberConfiguracoes(quantTab, dificuldade,finalizar, numRodadas)
     board, board2 = createMatrice(quantTab,dificuldade)
     column, column2 = createColumns(board, board2)
@@ -341,86 +342,161 @@ Digite o nickname do jogador 2
 -------------
   ^   ^   ^
   c1  c2  c3
+
 ''')    
-        plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']]
-        while fakeMatrice != board:
-            p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
-            p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
-            p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
-            p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
+        if finalizar == 1:
+            while contadorRodadas < gameConfigs['Encerrar']:
+                p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
+                p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
-            p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
-            interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
-            roundWinner, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
-            statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
-            winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWinner, maiMen1, maiMen2)
-            nume = returnNum(roundWinner,winnerplay,maiMen1, maiMen2,column, plays, board)
-            matind, numind = searchindex(board,nume)
-            fakematr = tableSwap(nume,fakeMatrice,matind,numind)
-            fakeMatrice = fakematr
-            
-            
-            print(f'''
-    ===========Status da rodada===========    
-            ''')
-            if roundWinner == 1:
-                print('O jogador 1 foi o vencedor da rodada')
-                gameStats['Jogador 1'][0][1] += 1
-                if maiorOuMen == True:
-                    print('O valor chutado é maior que a soma')    
-                else:
-                    print('O valor chutado é menor que a soma') 
+                p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
+                interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
+                roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
+                statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
+                winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
+                nume = returnNum(roundWin,winnerplay,maiMen1, maiMen2,column, plays, board)
+                matind, numind = searchindex(board,nume)
+                fakematr = tableSwap(nume,fakeMatrice,matind,numind)
+                fakeMatrice = fakematr
+                
+                
+                print(f'''
+ ===========Status da rodada===========    
+                ''')
+                if roundWin == 1:
+                    print('O jogador 1 foi o vencedor da rodada')
+                    gameStats['Jogador 1'][0][1] += 1
+                    if maiorOuMen == True:
+                        print('O valor chutado é maior que a soma')    
+                    else:
+                        print('O valor chutado é menor que a soma') 
 
-            elif roundWinner == 2:
-                print('O jogador 2 foi o vencedor da rodada')
-                gameStats['Jogador 2'][0][1] += 1
-                if maiorOuMen == True:
-                    print('O valor chutado é maior que a soma')    
-                else:
-                    print('O valor chutado é menor que a soma') 
+                elif roundWin == 2:
+                    print('O jogador 2 foi o vencedor da rodada')
+                    gameStats['Jogador 2'][0][1] += 1
+                    if maiorOuMen == True:
+                        print('O valor chutado é maior que a soma')    
+                    else:
+                        print('O valor chutado é menor que a soma') 
 
-            elif roundWinner == 3:
-                print('Os dois jogadores possuem a mesma aproximação, ambos ganharam!')
-                gameStats['Jogador 1'][0][1] += 1
-                gameStats['Jogador 2'][0][1] += 1
+                elif roundWin == 3:
+                    print('Os dois jogadores possuem a mesma aproximação, ambos ganharam!')
+                    gameStats['Jogador 1'][0][1] += 1
+                    gameStats['Jogador 2'][0][1] += 1
 
-            elif roundWinner == 4:
-                print('O jogador 1 acertou a soma em cheio! Todas as casas serão reveladas')
+                elif roundWin == 4:
+                    print('O jogador 1 acertou a soma em cheio! Todas as casas serão reveladas')
 
-            #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
-            elif roundWinner == 5:
-                print('O jogador 2 acertou a soma em cheio! Todas as casas serão reveladas')
-            elif roundWinner == 6:
-                print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
-            #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
-            
-            for i in fakematr:
-                print(i)
+                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+                elif roundWin == 5:
+                    print('O jogador 2 acertou a soma em cheio! Todas as casas serão reveladas')
+                elif roundWin == 6:
+                    print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
+                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+                
+                for i in fakematr:
+                    print(i)
 
-            print(f'''
+                print(f'''
 {gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
 {gameStats['Jogador 2'][0][0]} | Possui {gameStats['Jogador 2'][0][1]} Casas Reveladas       
-            ''')
+                ''')
 
-            for i in range(len(gameStats['Jogador 1'][1][0])):
-                quadPlay = gameStats['Jogador 1'][1][0][i]
-                numSumPlay = gameStats['Jogador 1'][1][1][i]
-                print(f'''
+                for i in range(len(gameStats['Jogador 1'][1][0])):
+                    quadPlay = gameStats['Jogador 1'][1][0][i]
+                    numSumPlay = gameStats['Jogador 1'][1][1][i]
+                    print(f'''
 {i + 1}º Rodada | {gameStats['Jogador 1'][0][0]}
 Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
-            for i in range(len(gameStats['Jogador 2'][1][0])):
-                quadPlay = gameStats['Jogador 2'][1][0][i]
-                numSumPlay = gameStats['Jogador 2'][1][1][i]
-                print(f'''
+                for i in range(len(gameStats['Jogador 2'][1][0])):
+                    quadPlay = gameStats['Jogador 2'][1][0][i]
+                    numSumPlay = gameStats['Jogador 2'][1][1][i]
+                    print(f'''
 {i + 1}º Rodada | {gameStats['Jogador 2'][0][0]}
 Escolheu a jogada {quadPlay} de soma {numSumPlay} 
-=======================================
-''')
+
+    ''')
+                contadorRodadas += 1
+        elif finalizar == 2:   
+            while fakeMatrice != board:
+                p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
+                p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
+
+                p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
+                interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
+                roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
+                statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
+                winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
+                nume = returnNum(roundWin,winnerplay,maiMen1, maiMen2,column, plays, board)
+                matind, numind = searchindex(board,nume)
+                fakematr = tableSwap(nume,fakeMatrice,matind,numind)
+                fakeMatrice = fakematr
+                
+                
+                print(f'''
+        ===========Status da rodada===========    
+                ''')
+                if roundWin == 1:
+                    print('O jogador 1 foi o vencedor da rodada')
+                    gameStats['Jogador 1'][0][1] += 1
+                    if maiorOuMen == True:
+                        print('O valor chutado é maior que a soma')    
+                    else:
+                        print('O valor chutado é menor que a soma') 
+
+                elif roundWin == 2:
+                    print('O jogador 2 foi o vencedor da rodada')
+                    gameStats['Jogador 2'][0][1] += 1
+                    if maiorOuMen == True:
+                        print('O valor chutado é maior que a soma')    
+                    else:
+                        print('O valor chutado é menor que a soma') 
+
+                elif roundWin == 3:
+                    print('Os dois jogadores possuem a mesma aproximação, ambos ganharam!')
+                    gameStats['Jogador 1'][0][1] += 1
+                    gameStats['Jogador 2'][0][1] += 1
+
+                elif roundWin == 4:
+                    print('O jogador 1 acertou a soma em cheio! Todas as casas serão reveladas')
+
+                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+                elif roundWin == 5:
+                    print('O jogador 2 acertou a soma em cheio! Todas as casas serão reveladas')
+                elif roundWin == 6:
+                    print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
+                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+                
+                for i in fakematr:
+                    print(i)
+
+                print(f'''
+    {gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
+    {gameStats['Jogador 2'][0][0]} | Possui {gameStats['Jogador 2'][0][1]} Casas Reveladas       
+                ''')
+
+                for i in range(len(gameStats['Jogador 1'][1][0])):
+                    quadPlay = gameStats['Jogador 1'][1][0][i]
+                    numSumPlay = gameStats['Jogador 1'][1][1][i]
+                    print(f'''
+    {i + 1}º Rodada | {gameStats['Jogador 1'][0][0]}
+    Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
+                for i in range(len(gameStats['Jogador 2'][1][0])):
+                    quadPlay = gameStats['Jogador 2'][1][0][i]
+                    numSumPlay = gameStats['Jogador 2'][1][1][i]
+                    print(f'''
+    {i + 1}º Rodada | {gameStats['Jogador 2'][0][0]}
+    Escolheu a jogada {quadPlay} de soma {numSumPlay} 
+    ''')
 
 
         
 
-
+print('fim')
 print(gameConfigs)
 print(gameStats)
 print(board)
