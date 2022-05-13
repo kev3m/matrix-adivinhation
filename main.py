@@ -219,8 +219,10 @@ def returnNum(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,play
             indexcolumn = playsTab[0].index(winnerPlayCase)
             if maiorOumenor == True:
                 swapNum = max(coluna[indexcolumn])
+                coluna[indexcolumn].remove(swapNum)
             elif maiorOumenor == False:
                 swapNum = min(coluna[indexcolumn])
+                coluna[indexcolumn].remove(swapNum)
 
         if winnerPlayCase[0] == 'l':
             indexcolumn = playsTab[1].index(winnerPlayCase)
@@ -312,7 +314,9 @@ while menu != 3:
     contadorRodadas = 0
     receberConfiguracoes(quantTab, dificuldade,finalizar, numRodadas)
     board, board2 = createMatrice(quantTab,dificuldade)
+    print(board)
     column, column2 = createColumns(board, board2)
+    lines, lines2 = board.copy(), board2.copy()
     sumtab = somarMatriz(quantTab, dificuldade)
     fakeMatrice = createFakeMatrice(dificuldade)
     jogador1Nick = input('''
@@ -356,7 +360,7 @@ Digite o nickname do jogador 2
                 roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
                 winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
-                nume = returnNum(roundWin,winnerplay,maiMen1, maiMen2,column, plays, board)
+                nume = returnNum(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
                 matind, numind = searchindex(board,nume)
                 fakematr = tableSwap(nume,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
@@ -493,9 +497,30 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
     Escolheu a jogada {quadPlay} de soma {numSumPlay} 
     ''')
 
+        if gameStats['Jogador 1'][0][1] > gameStats['Jogador 2'][0][1]:
+            print(f'''
+===========Fim do jogo=========== 
 
-        
+{gameStats['Jogador 1'][0][0]} saiu vitorioso!
 
+===========Fim do jogo=========== 
+''')
+        elif gameStats['Jogador 1'][0][1] < gameStats['Jogador 2'][0][1]:
+            print(f'''
+===========Fim do jogo=========== 
+
+{gameStats['Jogador 2'][0][0]} saiu vitorioso!
+
+===========Fim do jogo=========== 
+''')
+        else:
+            print(f'''
+===========Fim do jogo=========== 
+
+Houve um empate,
+
+===========Fim do jogo=========== 
+''')
 print('fim')
 print(gameConfigs)
 print(gameStats)

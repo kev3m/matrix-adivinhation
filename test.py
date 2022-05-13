@@ -58,6 +58,7 @@ def createColumns(mat1, mat2):
     return colunas, colunas2
 
 mat = [[1,2,3], [4,5,6], [7,8,9]]
+linhas = mat.copy()
 mat2 = []
 plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']]
 
@@ -76,8 +77,10 @@ def returnNum(winnerPlay,maiorOumenor,coluna,playsTab, matriz):
         indexcolumn = playsTab[0].index(winnerPlay)
         if maiorOumenor == True:
             swapNum = max(coluna[indexcolumn])
+            coluna[indexcolumn].remove(swapNum)
         elif maiorOumenor == False:
             swapNum = min(coluna[indexcolumn])
+            coluna[indexcolumn].remove(swapNum)
 
     if winnerPlay[0] == 'l':
         indexcolumn = playsTab[1].index(winnerPlay)
