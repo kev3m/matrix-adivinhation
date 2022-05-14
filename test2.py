@@ -1,5 +1,6 @@
-test = 4
-lista = [[1,2,3], [4,5,6], [7,8,9]]
+pres = [1,2, 3]
+presNum = [-1,-2, -3]
+numero = [10,20,30]
 
-swap = lista[0]
-print(lista)
+for i in range(len(numero)):
+    

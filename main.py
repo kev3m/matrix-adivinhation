@@ -278,13 +278,31 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,colun
         return swapNum
 
 def searchindex(matriz,num):
-    for i in matriz:
-        if num in i:
-            return matriz.index(i), i.index(num)
+    #Verificar se num é uma lista ou não
+    if isinstance(num,list) == False:
+        for i in matriz:
+            if num in i:
+                return matriz.index(i), i.index(num)
+    elif isinstance(num,list) == True:
+        whichList = []
+        whichListPos = []
+        for j in num:
+            for i in matriz:
+                if j in i:
+                    whichList.append(matriz.index(i))
+                    whichListPos.append(i.index(j))
+        return whichList, whichListPos
+
+
 
 def tableSwap(numero,fakemat,matrizInd, numInd):
-    fakemat[matrizInd][numInd] = numero
-    return fakemat
+    if isinstance(numero,list) == False:
+        fakemat[matrizInd][numInd] = numero
+        return fakemat
+    elif isinstance(numero,list) == True):
+        for i in matrizInd:
+            for j in 
+
 
 
 def statusReceiver(p1P,p1Sum, p2P, p2Sum,statsTab):
