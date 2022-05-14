@@ -177,17 +177,23 @@ def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
     elif p1P < p1Sum:
         p1P = (p1Sum - p1P)
         maiorOumenor = True
+    elif p1P == p1Sum:
+        p1P = 0
+        maiorOumenor = True
     if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
         p2P = (p2P - p2Sum)
         maiorOumenor2 = False
     elif p2P < p2Sum:
         p2P = (p2Sum - p2P)
         maiorOumenor2 = True
+    elif p2P == p2Sum:
+        p2P = 0
+        maiorOumenor2 = True
     #Retorna  o intervalo
     return p1P, p2P, maiorOumenor, maiorOumenor2
 
 def roundWinner(p1P, p2P,maiMen1, maiMen2):
-    if p1P < p2P:
+    if p1P < p2P and p1P != 0:
         return 1, maiMen1
     elif p1P > p2P:
         return 2, maiMen2
@@ -213,38 +219,62 @@ def returnWinnePlay(p1P, p2P, roundWinner, maiMen1, maiMen2):
         elif roundWinner == 3 or roundWinner == 6:
             return p1P, p2P, maiMen1, maiMen2 
 
-def returnNum(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,playsTab, matriz):
+def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,playsTab, matriz):
     if winnerPlay == 1 or winnerPlay == 4:
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
-            if maiorOumenor == True:
-                swapNum = max(coluna[indexcolumn])
-                coluna[indexcolumn].remove(swapNum)
-            elif maiorOumenor == False:
-                swapNum = min(coluna[indexcolumn])
-                coluna[indexcolumn].remove(swapNum)
-
-        if winnerPlayCase[0] == 'l':
+            if winnerPlay == 1:
+                if maiorOumenor == True:
+                    swapNum = max(coluna[indexcolumn])
+                    coluna[indexcolumn].remove(swapNum)
+                elif maiorOumenor == False:
+                    swapNum = min(coluna[indexcolumn])
+                    coluna[indexcolumn].remove(swapNum)
+            elif winnerPlay == 4:
+                #Não da pra usar pop pois remove a matriz               
+                swapNum = coluna[indexcolumn].copy()  
+                coluna[indexcolumn].clear()        
+        elif winnerPlayCase[0] == 'l':
             indexcolumn = playsTab[1].index(winnerPlayCase)
-            if maiorOumenor == True:
-                swapNum = max(matriz[indexcolumn])
-            elif maiorOumenor == False:
-                swapNum = min(matriz[indexcolumn])
+            if winnerPlay == 1:
+                if maiorOumenor == True:
+                    swapNum = max(matriz[indexcolumn])
+                    matriz[indexcolumn].remove(swapNum)
+                elif maiorOumenor == False:
+                    swapNum = min(matriz[indexcolumn])
+                    matriz[indexcolumn].remove(swapNum)
+            elif winnerPlay == 4:
+                swapNum = matriz[indexcolumn].copy()  
+                matriz[indexcolumn].clear()    
         return swapNum
+
     elif winnerPlay == 2 or winnerPlay == 5:
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
-            if maiorOumenor2 == True:
-                swapNum = max(coluna[indexcolumn])
-            elif maiorOumenor2 == False:
-                swapNum = min(coluna[indexcolumn])
+            if winnerPlay == 2:
+                if maiorOumenor2 == True:
+                    swapNum = max(coluna[indexcolumn])
+                    coluna[indexcolumn].remove(swapNum)
+                elif maiorOumenor2 == False:
+                    swapNum = min(coluna[indexcolumn]) 
+                    coluna[indexcolumn].remove(swapNum)
+            elif winnerPlay == 5:
+                swapNum = matriz[indexcolumn].copy()  
+                coluna[indexcolumn].clear() 
 
-        if winnerPlayCase[0] == 'l':
+        elif winnerPlayCase[0] == 'l':
             indexcolumn = playsTab[1].index(winnerPlayCase)
-            if maiorOumenor2 == True:
-                swapNum = max(matriz[indexcolumn])
-            elif maiorOumenor2 == False:
-                swapNum = min(matriz[indexcolumn])
+            if winnerPlay == 2:
+                if maiorOumenor2 == True:
+                    swapNum = max(matriz[indexcolumn])
+                    matriz[indexcolumn].remove(swapNum)
+                elif maiorOumenor2 == False:
+                    swapNum = min(matriz[indexcolumn])
+                    matriz[indexcolumn].remove(swapNum)
+            elif winnerPlay == 5:
+                swapNum = matriz[indexcolumn].copy()  
+                matriz[indexcolumn].clear() 
+            
         return swapNum
 
 def searchindex(matriz,num):
@@ -358,11 +388,13 @@ Digite o nickname do jogador 2
                 p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
                 interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
                 roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
+
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
+
                 winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
-                nume = returnNum(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
-                matind, numind = searchindex(board,nume)
-                fakematr = tableSwap(nume,fakeMatrice,matind,numind)
+                numToSwap = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
+                matind, numind = searchindex(board,numToSwap)
+                fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
                 
                 
@@ -391,11 +423,11 @@ Digite o nickname do jogador 2
                     gameStats['Jogador 2'][0][1] += 1
 
                 elif roundWin == 4:
-                    print('O jogador 1 acertou a soma em cheio! Todas as casas serão reveladas')
+                    print('O jogador 1 acertou a soma em cheio! Todas as casas da respectiva linha/coluna serão reveladas')
 
                 #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
                 elif roundWin == 5:
-                    print('O jogador 2 acertou a soma em cheio! Todas as casas serão reveladas')
+                    print('O jogador 2 acertou a soma em cheio! Todas as casas da respectiva linha/coluna serão reveladas')
                 elif roundWin == 6:
                     print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
                 #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
@@ -433,11 +465,13 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
                 interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
                 roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
+
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
+                
                 winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
-                nume = returnNum(roundWin,winnerplay,maiMen1, maiMen2,column, plays, board)
-                matind, numind = searchindex(board,nume)
-                fakematr = tableSwap(nume,fakeMatrice,matind,numind)
+                numToSwap = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, board)
+                matind, numind = searchindex(board,numToSwap)
+                fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
                 
                 

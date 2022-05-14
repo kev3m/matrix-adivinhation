@@ -191,6 +191,7 @@ def returnNum(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,play
             elif maiorOumenor == False:
                 swapNum = min(matriz[indexcolumn])
         return swapNum
+
     elif winnerPlay == 2 or winnerPlay == 5:
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
