@@ -1,13 +1,20 @@
+
+# Retorna um dicionário contendo as somas dos valores em linhas e colunas.
 def sumMatrice(boardNumbers, difficulty, board, board2):
+    #Por padrão, delimita valores utilizados em um tabuleliro 3x3 e incrementa no caso de aumento da dificuldade
+    #As somas foram feitas de forma manual, levando em conta os respectivos indices
     c1,c2,c3 = (board[0][0] + board[1][0] + board[2][0]), (board[0][1] + board[1][1] + board[2][1]), (board[0][2] + board[1][2] + board[2][2])
     l1, l2, l3 = (sum(board[0])), (sum(board[1])), (sum(board[2]))
     somasTab = {'Colunas': [c1,c2,c3], 'Linhas': [l1,l2,l3] }
+
+    # Em caso de dois tabuleiros
     if boardNumbers == 2:
         c_1,c_2,c_3 = (board2[0][0] + board2[1][0] + board2[2][0]), (board2[0][1] + board2[1][1] + board2[2][1]), (board2[0][2] + board2[1][2] + board2[2][2])
         l_1, l_2, l_3 = (sum(board2[0])), (sum(board2[1])), (sum(board2[2]))
         somasTab = {'Colunas': [c1,c2,c3], 'Linhas': [l1,l2,l3] 
             ,'ColunasT2': [c_1,c_2,c_3], 'LinhasT2': [l_1,l_2,l_3]} 
 
+    #Incrementação do dicionário com base da dificuldade
     if difficulty == 4:
         c1 += board[3][0]
         c2 += board[3][1]
@@ -43,6 +50,7 @@ def sumMatrice(boardNumbers, difficulty, board, board2):
             ,'ColunasT2': [c_1,c_2,c_3,c_4,c_5], 'LinhasT2': [l_1,l_2,l_3,l_4,l_5]}           
     return somasTab
 
+#Relaciona as escollhas do tipo string com os valores da soma para comparação da diferença entre os intervalos
 def assignTableValues(p1P, p2P,sumtab):
     if p1P == 'c1':
         p1P = sumtab['Colunas'][0]

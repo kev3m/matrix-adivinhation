@@ -1,5 +1,8 @@
+#Recebe os valores das somas retornados por AssignTableValues, os compora com os chutes dos jogadores e retorna o intervalo entre os dois.
 def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
-    if p1P > p1Sum:#Num Original | Num escolhido pelo user
+    # p1P = Num Original | P1Sum = Chute escolhido pelo user
+    # bigger_or_smaller = False se o chute for menor que a soma. Do contrário recebe True
+    if p1P > p1Sum:
         p1P = (p1P - p1Sum)
         bigger_or_smaller = False
     elif p1P < p1Sum:
@@ -8,7 +11,7 @@ def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
     elif p1P == p1Sum:
         p1P = 0
         bigger_or_smaller = True
-    if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
+    if p2P > p2Sum: 
         p2P = (p2P - p2Sum)
         bigger_or_smaller2 = False
     elif p2P < p2Sum:
@@ -20,13 +23,14 @@ def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
     #Retorna  o intervalo
     return p1P, p2P, bigger_or_smaller, bigger_or_smaller2    
 
+# Retorna os casos de vitória com base na diferença entre os intervalos
 def roundWinner(p1P, p2P,biggerORsmaller, biggerORsmaller2):
     #BiggerORsmaller | Parâmetro que recebe se determinada chute é maior ou menor que a soma
     if p1P < p2P and p1P != 0:
         return 1, biggerORsmaller
     elif p1P > p2P:
         return 2, biggerORsmaller2
-     #mesma aproximação   
+       
     elif p1P == p2P and p1P != 0 and p2P != 0:
         biggerORsmaller = biggerORsmaller2 = 'Mesma aproximação'
         return 3, biggerORsmaller, biggerORsmaller2
@@ -40,6 +44,7 @@ def roundWinner(p1P, p2P,biggerORsmaller, biggerORsmaller2):
         biggerORsmaller = biggerORsmaller2 = 'Ambos acertaram a soma'
         return 6, biggerORsmaller, biggerORsmaller2
 
+#Recebe o caso de vitória e retorna a jogada vencedora
 def returnWinnerPlay(p1P, p2P, roundWinner, biggerORsmaller, biggerORsmaller2):
         if roundWinner == 1 or roundWinner == 4:
             return p1P, biggerORsmaller
@@ -48,7 +53,13 @@ def returnWinnerPlay(p1P, p2P, roundWinner, biggerORsmaller, biggerORsmaller2):
         elif roundWinner == 3 or roundWinner == 6:
             return p1P, p2P, biggerORsmaller, biggerORsmaller2 
 
+# Retorna o(s) número(s) a serem substituidos na matriz falsa
+
+
+
+
 def returnNumToSwap(winnerPlay, winnerPlayCase,bigger_or_smaller, bigger_or_smaller2,coluna,playsTab, linha):
+    linha = linha.copy()
     if winnerPlay == 1 or winnerPlay == 4:
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
