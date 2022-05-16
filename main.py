@@ -1,28 +1,29 @@
 import random
-gameConfigs = {'Tabuleiros': 0, 'Dificuldade': 0, 'Encerrar': 0} #Dif = (F,M OU D)
+import functions
+gameConfigs = {'Tabuleiros': 0, 'difficulty': 0, 'Encerrar': 0} #Dif = (F,M OU D)
 gameStats = { 'Jogador 1': [['Nome', 0],[[], []]], 'Jogador 2': [['Nome', 0],[[], []]]}
-#Encerrar recebe uma lista contendo [X,Y] se a opção selecionadar for por rodadas, sendo X a opção e Y o número de rodadas
+#gameStats = { 'Jogador X/Y': [['Nome do jogador', Pontuação do jogador],[[Linha/Coluna selecionada], [Chute da soma]]]}
 
-def receberConfiguracoes(quantTabuleiros,dificuldade, encerramento, rodadas) :
-    if quantTabuleiros == 1:
+def receiveConfigs(boardNumbers,difficulty, closure, roundsNum) :
+    if boardNumbers == 1:
         gameConfigs['Tabuleiros'] = 1
-    elif quantTabuleiros == 2:
+    elif boardNumbers == 2:
         gameConfigs['Tabuleiros'] = 2
     else:
         return 'O jogo só pode ser jogado com 1 ou 2 tabuleiros! Digite uma quantidade válida.'
 
-    if dificuldade == 'F':
-        gameConfigs['Dificuldade'] = 3
-    elif dificuldade == 'M':
-        gameConfigs['Dificuldade'] = 4
-    elif dificuldade == 'D':
-        gameConfigs['Dificuldade'] = 5
+    if difficulty == 'F':
+        gameConfigs['difficulty'] = 3
+    elif difficulty == 'M':
+        gameConfigs['difficulty'] = 4
+    elif difficulty == 'D':
+        gameConfigs['difficulty'] = 5
     
-    if encerramento == 1:
-        gameConfigs['Encerrar'] = rodadas
-    elif encerramento == 2:
-        gameConfigs['Encerrar'] = encerramento
-    return quantTabuleiros, dificuldade, encerramento, rodadas
+    if closure == 1:
+        gameConfigs['Encerrar'] = roundsNum
+    elif closure == 2:
+        gameConfigs['Encerrar'] = closure
+    return boardNumbers, difficulty, closure, roundsNum
 
 def createMatrice(boardNumbers, difficulty):
     numList = []
@@ -66,24 +67,24 @@ def createFakeMatrice(difficulty):
             invVar.append(0)
         fakeMatriz.append(invVar)
     return fakeMatriz       
-def createColumns(mat1, mat2):
+def createColumnsMatrice(matrice1, matrice2):
     colunas = []
     colunas2 = []
-    for i in range(len(mat1)):
+    for i in range(len(matrice1)):
         col = []
-        for j in mat1:
+        for j in matrice1:
             col.append(j[i])
         colunas.append(col)
 
-    for i in range(len(mat2)):
+    for i in range(len(matrice2)):
         col = []
-        for j in mat2:
+        for j in matrice2:
             col.append(j[i])
         colunas2.append(col)
     return colunas, colunas2
 
 
-def somarMatriz(boardNumbers, difficulty):
+def sumMatrice(boardNumbers, difficulty):
     c1,c2,c3 = (board[0][0] + board[1][0] + board[2][0]), (board[0][1] + board[1][1] + board[2][1]), (board[0][2] + board[1][2] + board[2][2])
     l1, l2, l3 = (sum(board[0])), (sum(board[1])), (sum(board[2]))
     somasTab = {'Colunas': [c1,c2,c3], 'Linhas': [l1,l2,l3] }
@@ -128,7 +129,7 @@ def somarMatriz(boardNumbers, difficulty):
             ,'ColunasT2': [c_1,c_2,c_3,c_4,c_5], 'LinhasT2': [l_1,l_2,l_3,l_4,l_5]}           
     return somasTab
 
-def atribuirValoresTabela(p1P, p2P,sumtab):
+def assignTableValues(p1P, p2P,sumtab):
     if p1P == 'c1':
         p1P = sumtab['Colunas'][0]
     elif p1P == 'c2':
@@ -175,62 +176,63 @@ def atribuirValoresTabela(p1P, p2P,sumtab):
 def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
     if p1P > p1Sum:#Num Original | Num escolhido pelo user
         p1P = (p1P - p1Sum)
-        maiorOumenor = False
+        bigger_or_smaller = False
     elif p1P < p1Sum:
         p1P = (p1Sum - p1P)
-        maiorOumenor = True
+        bigger_or_smaller = True
     elif p1P == p1Sum:
         p1P = 0
-        maiorOumenor = True
+        bigger_or_smaller = True
     if p2P > p2Sum: #p2p = num da casa chutada | p2sum = soma chutada
         p2P = (p2P - p2Sum)
-        maiorOumenor2 = False
+        bigger_or_smaller2 = False
     elif p2P < p2Sum:
         p2P = (p2Sum - p2P)
-        maiorOumenor2 = True
+        bigger_or_smaller2 = True
     elif p2P == p2Sum:
         p2P = 0
-        maiorOumenor2 = True
+        bigger_or_smaller2 = True
     #Retorna  o intervalo
-    return p1P, p2P, maiorOumenor, maiorOumenor2
+    return p1P, p2P, bigger_or_smaller, bigger_or_smaller2
 
-def roundWinner(p1P, p2P,maiMen1, maiMen2):
+def roundWinner(p1P, p2P,biggerORsmaller, biggerORsmaller2):
+    #BiggerORsmaller | Parâmetro que recebe se determinada chute é maior ou menor que a soma
     if p1P < p2P and p1P != 0:
-        return 1, maiMen1
+        return 1, biggerORsmaller
     elif p1P > p2P:
-        return 2, maiMen2
+        return 2, biggerORsmaller2
      #mesma aproximação   
     elif p1P == p2P and p1P != 0 and p2P != 0:
-        maiMen1 = maiMen2 = 'Mesma aproximação'
-        return 3, maiMen1, maiMen2
+        biggerORsmaller = biggerORsmaller2 = 'Mesma aproximação'
+        return 3, biggerORsmaller, biggerORsmaller2
     elif p1P == 0:
-        maiMen1 = 'P1 Acertou a soma'
-        return 4, maiMen1
+        biggerORsmaller = 'P1 Acertou a soma'
+        return 4, biggerORsmaller
     elif p2P == 0:
-        maiMen2 = 'P2 Acertou a soma'
-        return 5, maiMen2
+        biggerORsmaller2 = 'P2 Acertou a soma'
+        return 5, biggerORsmaller2
     elif p1P == 0 and p1P == 0:
-        maiMen1 = maiMen2 = 'Ambos acertaram a soma'
-        return 6, maiMen1, maiMen2
+        biggerORsmaller = biggerORsmaller2 = 'Ambos acertaram a soma'
+        return 6, biggerORsmaller, biggerORsmaller2
 
-def returnWinnePlay(p1P, p2P, roundWinner, maiMen1, maiMen2):
+def returnWinnerPlay(p1P, p2P, roundWinner, biggerORsmaller, biggerORsmaller2):
         if roundWinner == 1 or roundWinner == 4:
-            return p1P, maiMen1
+            return p1P, biggerORsmaller
         elif roundWinner == 2 or roundWinner == 5:
-            return p2P, maiMen2
+            return p2P, biggerORsmaller2
         elif roundWinner == 3 or roundWinner == 6:
-            return p1P, p2P, maiMen1, maiMen2 
+            return p1P, p2P, biggerORsmaller, biggerORsmaller2 
 
 #Remove os nums da linha/coluna
-def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,playsTab, linha):
+def returnNumToSwap(winnerPlay, winnerPlayCase,bigger_or_smaller, bigger_or_smaller2,coluna,playsTab, linha):
     if winnerPlay == 1 or winnerPlay == 4:
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
             if winnerPlay == 1:
-                if maiorOumenor == True:
+                if bigger_or_smaller == True:
                     swapNum = max(coluna[indexcolumn])
                     coluna[indexcolumn].remove(swapNum)
-                elif maiorOumenor == False:
+                elif bigger_or_smaller == False:
                     swapNum = min(coluna[indexcolumn])
                     coluna[indexcolumn].remove(swapNum)
             elif winnerPlay == 4:
@@ -240,10 +242,10 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,colun
         elif winnerPlayCase[0] == 'l':
             indexcolumn = playsTab[1].index(winnerPlayCase)
             if winnerPlay == 1:
-                if maiorOumenor == True:
+                if bigger_or_smaller == True:
                     swapNum = max(linha[indexcolumn])
                     linha[indexcolumn].remove(swapNum)
-                elif maiorOumenor == False:
+                elif bigger_or_smaller == False:
                     swapNum = min(linha[indexcolumn])
                     linha[indexcolumn].remove(swapNum)
             elif winnerPlay == 4:
@@ -255,10 +257,10 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,colun
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
             if winnerPlay == 2:
-                if maiorOumenor2 == True:
+                if bigger_or_smaller2 == True:
                     swapNum = max(coluna[indexcolumn])
                     coluna[indexcolumn].remove(swapNum)
-                elif maiorOumenor2 == False:
+                elif bigger_or_smaller2 == False:
                     swapNum = min(coluna[indexcolumn]) 
                     coluna[indexcolumn].remove(swapNum)
             elif winnerPlay == 5:
@@ -268,10 +270,10 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,colun
         elif winnerPlayCase[0] == 'l':
             indexcolumn = playsTab[1].index(winnerPlayCase)
             if winnerPlay == 2:
-                if maiorOumenor2 == True:
+                if bigger_or_smaller2 == True:
                     swapNum = max(linha[indexcolumn])
                     linha[indexcolumn].remove(swapNum)
-                elif maiorOumenor2 == False:
+                elif bigger_or_smaller2 == False:
                     swapNum = min(linha[indexcolumn])
                     linha[indexcolumn].remove(swapNum)
             elif winnerPlay == 5:
@@ -279,7 +281,7 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,colun
                 linha[indexcolumn].clear() 
         return swapNum, linha
 
-def searchindex(defaultboard,num):
+def searchNumIndexInMainBoard(defaultboard,num):
     #Verificar se num é uma lista ou não
     if isinstance(num,list) == False:
         for i in defaultboard:
@@ -294,7 +296,6 @@ def searchindex(defaultboard,num):
                     whichList.append(defaultboard.index(i))
                     whichListPos.append(i.index(j))
         return whichList, whichListPos
-
 
 
 def tableSwap(numero,fakemat,matrizInd, numInd):
@@ -315,7 +316,6 @@ def tableSwap(numero,fakemat,matrizInd, numInd):
                 numIndice = numInd[i]
                 fakemat[matrizIndice][numIndice] = numero[i]
         return fakemat
-
 
 
 def statusReceiver(p1P,p1Sum, p2P, p2Sum,statsTab):
@@ -371,9 +371,9 @@ while menu != 3:
 =====================================
             ''')
             quantTab == 1
-        dificuldade = int(input('''Selecione a dificuldade:
+        difficulty = int(input('''Selecione a difficulty:
         
-=== Selecione a dificuldade ===
+=== Selecione a difficulty ===
 
     [3] - Fácil (3x3)
     [4] - Médil (4x4)
@@ -382,11 +382,11 @@ while menu != 3:
 ================================    
 '''))
 
-        while dificuldade != 3 and dificuldade != 4 and dificuldade != 5:
-            print('Falha na matrix! Dificuldade inválida')
-            dificuldade = int(input('''Selecione a dificuldade:
+        while difficulty != 3 and difficulty != 4 and difficulty != 5:
+            print('Falha na matrix! difficulty inválida')
+            difficulty = int(input('''Selecione a difficulty:
         
-=== Selecione a dificuldade ===
+=== Selecione a difficulty ===
 
     [3] - Fácil (3x3)
     [4] - Médil (4x4)
@@ -418,20 +418,20 @@ while menu != 3:
         elif finalizar == 2:
             numRodadas = ''
     #Retornando as configurações para o dicionário
-    plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']]
+    plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']] #Utlizada para servir de referência para a função que retorna o(s) número(s) a ser(em) exibido(s)
+    
     contadorRodadas = 0
-    receberConfiguracoes(quantTab, dificuldade,finalizar, numRodadas)
-
-    board, board2, lines = createMatrice(quantTab,dificuldade)
+    receiveConfigs(quantTab, difficulty,finalizar, numRodadas)
+    board, board2, lines = createMatrice(quantTab,difficulty)
     print(board)
   
     #PR evitar o bug das linhas
    
-    column, column2 = createColumns(board, board2)
+    column, column2 = createColumnsMatrice(board, board2)
     #Matriz
     
-    sumtab = somarMatriz(quantTab, dificuldade)
-    fakeMatrice = createFakeMatrice(dificuldade)
+    sumtab = sumMatrice(quantTab, difficulty)
+    fakeMatrice = createFakeMatrice(difficulty)
     jogador1Nick = input('''
 ================================  
 Digite o nickname do jogador 1
@@ -464,42 +464,41 @@ Digite o nickname do jogador 2
         if finalizar == 1:
             while contadorRodadas < gameConfigs['Encerrar']:
                 p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
-                if dificuldade == '3':
+                if difficulty == '3':
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3':
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
-                elif dificuldade == '4':
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                elif difficulty == '4':
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4': 
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
-                elif dificuldade == '5':
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                elif difficulty == '5':
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'c5' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4' and p1Play != 'l5': 
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
                 
                 p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
                 
                 p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
-                if dificuldade == '3':
+                if difficulty == '3':
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3':
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
-                elif dificuldade == '4':
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                elif difficulty == '4':
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4': 
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
-                elif dificuldade == '5':
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                elif difficulty == '5':
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'c5' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4' and p2Play != 'l5': 
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
                
                 p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
-                p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
-                interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
-                roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
+                p1pTabel, p2pTabel = assignTableValues(p1Play,p2Play,sumtab)
+                interval1, interval2,biggerORsmaller, biggerORsmaller2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
+                roundWin, bigger_or_smaller = roundWinner(interval1,interval2,biggerORsmaller,biggerORsmaller2)
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
-                winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
-                numToSwap, matrizLimpa = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
-                matind, numind = searchindex(board,numToSwap)
+                winnerplay, moreOrLess = returnWinnerPlay(p1Play, p2Play, roundWin, biggerORsmaller, biggerORsmaller2)
+                numToSwap, matrizLimpa = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
+                matind, numind = searchNumIndexInMainBoard(board,numToSwap)
                 print(board)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
-                
                 
                 print(f'''
  ===========Status da rodada===========    
@@ -507,7 +506,7 @@ Digite o nickname do jogador 2
                 if roundWin == 1:
                     print('O jogador 1 foi o vencedor da rodada')
                     gameStats['Jogador 1'][0][1] += 1
-                    if maiorOuMen == True:
+                    if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
                     else:
                         print('O valor chutado é menor que a soma') 
@@ -515,7 +514,7 @@ Digite o nickname do jogador 2
                 elif roundWin == 2:
                     print('O jogador 2 foi o vencedor da rodada')
                     gameStats['Jogador 2'][0][1] += 1
-                    if maiorOuMen == True:
+                    if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
                     else:
                         print('O valor chutado é menor que a soma') 
@@ -565,15 +564,15 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
                 p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
-                p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
-                interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
-                roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
+                p1pTabel, p2pTabel = assignTableValues(p1Play,p2Play,sumtab)
+                interval1, interval2,biggerORsmaller, biggerORsmaller2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
+                roundWin, bigger_or_smaller = roundWinner(interval1,interval2,biggerORsmaller,biggerORsmaller2)
 
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
                 
-                winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
-                numToSwap = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
-                matind, numind = searchindex(board,numToSwap)
+                winnerplay, moreOrLess = returnWinnerPlay(p1Play, p2Play, roundWin, biggerORsmaller, biggerORsmaller2)
+                numToSwap = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
+                matind, numind = searchNumIndexInMainBoard(board,numToSwap)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
                 
@@ -584,7 +583,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 if roundWin == 1:
                     print('O jogador 1 foi o vencedor da rodada')
                     gameStats['Jogador 1'][0][1] += 1
-                    if maiorOuMen == True:
+                    if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
                     else:
                         print('O valor chutado é menor que a soma') 
@@ -592,7 +591,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 elif roundWin == 2:
                     print('O jogador 2 foi o vencedor da rodada')
                     gameStats['Jogador 2'][0][1] += 1
-                    if maiorOuMen == True:
+                    if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
                     else:
                         print('O valor chutado é menor que a soma') 
