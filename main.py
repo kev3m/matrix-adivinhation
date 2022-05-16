@@ -48,13 +48,15 @@ def createMatrice(boardNumbers, difficulty):
                 numList.pop(numList.index(j))
             matrice.append(numbers)
 
+    lines = matrice.copy()
+
     if boardNumbers == 2:
         for i in range(difficulty):
             numbers = random.sample(copyofNumList, difficulty)
             for j in numbers:
                 copyofNumList.pop(copyofNumList.index(j))
-            secondMatrice.append(numbers)
-    return matrice, secondMatrice
+            secondMatrice.append(numbers)      
+    return matrice, secondMatrice, lines
 def createFakeMatrice(difficulty):
     fakeMatriz = []
 
@@ -219,7 +221,8 @@ def returnWinnePlay(p1P, p2P, roundWinner, maiMen1, maiMen2):
         elif roundWinner == 3 or roundWinner == 6:
             return p1P, p2P, maiMen1, maiMen2 
 
-def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,playsTab, matriz):
+#Remove os nums da linha/coluna
+def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,coluna,playsTab, linha):
     if winnerPlay == 1 or winnerPlay == 4:
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
@@ -238,15 +241,15 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,colun
             indexcolumn = playsTab[1].index(winnerPlayCase)
             if winnerPlay == 1:
                 if maiorOumenor == True:
-                    swapNum = max(matriz[indexcolumn])
-                    matriz[indexcolumn].remove(swapNum)
+                    swapNum = max(linha[indexcolumn])
+                    linha[indexcolumn].remove(swapNum)
                 elif maiorOumenor == False:
-                    swapNum = min(matriz[indexcolumn])
-                    matriz[indexcolumn].remove(swapNum)
+                    swapNum = min(linha[indexcolumn])
+                    linha[indexcolumn].remove(swapNum)
             elif winnerPlay == 4:
-                swapNum = matriz[indexcolumn].copy()  
-                matriz[indexcolumn].clear()    
-        return swapNum
+                swapNum = linha[indexcolumn].copy()  
+                linha[indexcolumn].clear()    
+        return swapNum, linha
 
     elif winnerPlay == 2 or winnerPlay == 5:
         if winnerPlayCase[0] == 'c':
@@ -259,37 +262,36 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,maiorOumenor, maiorOumenor2,colun
                     swapNum = min(coluna[indexcolumn]) 
                     coluna[indexcolumn].remove(swapNum)
             elif winnerPlay == 5:
-                swapNum = matriz[indexcolumn].copy()  
+                swapNum = linha[indexcolumn].copy()  
                 coluna[indexcolumn].clear() 
 
         elif winnerPlayCase[0] == 'l':
             indexcolumn = playsTab[1].index(winnerPlayCase)
             if winnerPlay == 2:
                 if maiorOumenor2 == True:
-                    swapNum = max(matriz[indexcolumn])
-                    matriz[indexcolumn].remove(swapNum)
+                    swapNum = max(linha[indexcolumn])
+                    linha[indexcolumn].remove(swapNum)
                 elif maiorOumenor2 == False:
-                    swapNum = min(matriz[indexcolumn])
-                    matriz[indexcolumn].remove(swapNum)
+                    swapNum = min(linha[indexcolumn])
+                    linha[indexcolumn].remove(swapNum)
             elif winnerPlay == 5:
-                swapNum = matriz[indexcolumn].copy()  
-                matriz[indexcolumn].clear() 
-            
-        return swapNum
+                swapNum = linha[indexcolumn].copy()  
+                linha[indexcolumn].clear() 
+        return swapNum, linha
 
-def searchindex(matriz,num):
+def searchindex(defaultboard,num):
     #Verificar se num é uma lista ou não
     if isinstance(num,list) == False:
-        for i in matriz:
+        for i in defaultboard:
             if num in i:
-                return matriz.index(i), i.index(num)
+                return defaultboard.index(i), i.index(num)
     elif isinstance(num,list) == True:
         whichList = []
         whichListPos = []
         for j in num:
-            for i in matriz:
+            for i in defaultboard:
                 if j in i:
-                    whichList.append(matriz.index(i))
+                    whichList.append(defaultboard.index(i))
                     whichListPos.append(i.index(j))
         return whichList, whichListPos
 
@@ -299,9 +301,20 @@ def tableSwap(numero,fakemat,matrizInd, numInd):
     if isinstance(numero,list) == False:
         fakemat[matrizInd][numInd] = numero
         return fakemat
-    elif isinstance(numero,list) == True):
-        for i in matrizInd:
-            for j in 
+    elif isinstance(numero,list) == True:
+        #Indica que é uma linha
+        if isinstance(matrizInd,list) == False:
+            for i in range(len(numero)):
+                matrizIndice = matrizInd
+                numIndice = numInd[i]
+                fakemat[matrizIndice][numIndice] = numero[i]
+        #Indica que é uma coluna        
+        else:
+            for i in range(len(numero)):
+                matrizIndice = matrizInd[i]
+                numIndice = numInd[i]
+                fakemat[matrizIndice][numIndice] = numero[i]
+        return fakemat
 
 
 
@@ -336,7 +349,28 @@ while menu != 3:
 '''))
     #Configurando o game
     elif menu == 1:
-        quantTab = int(input('Digite a quantidade de tabuleiros a serem jogados: '))
+        quantTab = int(input('''
+=== Selecione a quantidade de tabuleiros ===
+
+    [1] - Tabuleiro único
+    [2] - 1 Tabuleiro para cada jogador
+    
+============================================ 
+'''))
+        if quantTab == 2:
+            print('''
+=====================================
+ ________________
+|                |
+|    Falha na    | 
+|     Matrix     |
+|________________| 
+ ∧＿∧  ||   Pedimos perdão!
+( ´ω`) ||   Apenas um tabuleiro está   
+/     づ    disponível no momento   
+=====================================
+            ''')
+            quantTab == 1
         dificuldade = int(input('''Selecione a dificuldade:
         
 === Selecione a dificuldade ===
@@ -347,24 +381,55 @@ while menu != 3:
     
 ================================    
 '''))
+
+        while dificuldade != 3 and dificuldade != 4 and dificuldade != 5:
+            print('Falha na matrix! Dificuldade inválida')
+            dificuldade = int(input('''Selecione a dificuldade:
         
+=== Selecione a dificuldade ===
+
+    [3] - Fácil (3x3)
+    [4] - Médil (4x4)
+    [5] - Difícil (5x5) 
+    
+================================    
+'''))
+
+
         finalizar = int(input('''Selecione o modo de encerramento da partida:
     [1] - Por número de rodadas
     [2] - Ao revelar completamente um dos tabuleiros
 '''))
-        if finalizar == 1:
-            numRodadas = int(input('''Digite o número de rodadas:
+        
+        while finalizar != 1 and finalizar != 2:
+            print('Falha na matrix! Encerramento inválido')
+            finalizar = int(input('''Selecione o modo de encerramento da partida:
+    [1] - Por número de rodadas
+    [2] - Ao revelar completamente um dos tabuleiros
 '''))
+
+        if finalizar == 1:
+            numRodadas = int(input('''Digite o número de rodadas: 
+'''))       
+            while numRodadas % 2 == 0:
+                print('Falha na matrix! O número de rodadas deve ser impar para evitar impates.')
+                numRodadas = int(input('''Digite o número de rodadas:        
+'''))     
         elif finalizar == 2:
             numRodadas = ''
     #Retornando as configurações para o dicionário
     plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']]
     contadorRodadas = 0
     receberConfiguracoes(quantTab, dificuldade,finalizar, numRodadas)
-    board, board2 = createMatrice(quantTab,dificuldade)
+
+    board, board2, lines = createMatrice(quantTab,dificuldade)
     print(board)
+  
+    #PR evitar o bug das linhas
+   
     column, column2 = createColumns(board, board2)
-    lines, lines2 = board.copy(), board2.copy()
+    #Matriz
+    
     sumtab = somarMatriz(quantTab, dificuldade)
     fakeMatrice = createFakeMatrice(dificuldade)
     jogador1Nick = input('''
@@ -399,19 +464,39 @@ Digite o nickname do jogador 2
         if finalizar == 1:
             while contadorRodadas < gameConfigs['Encerrar']:
                 p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                if dificuldade == '3':
+                    while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3':
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
+                elif dificuldade == '4':
+                    while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4': 
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
+                elif dificuldade == '5':
+                    while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'c5' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4' and p1Play != 'l5': 
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
+                
                 p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
+                
                 p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                if dificuldade == '3':
+                    while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3':
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
+                elif dificuldade == '4':
+                    while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4': 
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
+                elif dificuldade == '5':
+                    while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'c5' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4' and p2Play != 'l5': 
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
+               
                 p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
                 p1pTabel, p2pTabel = atribuirValoresTabela(p1Play,p2Play,sumtab)
                 interval1, interval2,maiMen1, maiMen2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
                 roundWin, maiorOumenor = roundWinner(interval1,interval2,maiMen1,maiMen2)
-
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
-
                 winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
-                numToSwap = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
+                numToSwap, matrizLimpa = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
                 matind, numind = searchindex(board,numToSwap)
+                print(board)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
                 
@@ -487,7 +572,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
                 
                 winnerplay, maiorOuMen = returnWinnePlay(p1Play, p2Play, roundWin, maiMen1, maiMen2)
-                numToSwap = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, board)
+                numToSwap = returnNumToSwap(roundWin,winnerplay,maiMen1, maiMen2,column, plays, lines)
                 matind, numind = searchindex(board,numToSwap)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
