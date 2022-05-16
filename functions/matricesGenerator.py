@@ -1,3 +1,5 @@
+import random
+
 def createMatrice(boardNumbers, difficulty):
     numList = []
     interval = 0
@@ -31,3 +33,29 @@ def createMatrice(boardNumbers, difficulty):
                 copyofNumList.pop(copyofNumList.index(j))
             secondMatrice.append(numbers)      
     return matrice, secondMatrice, lines
+
+def createFakeMatrice(difficulty):
+    fakeMatriz = []
+
+    for i in range(difficulty):
+        invVar = []
+        for j in range(difficulty):
+            invVar.append(0)
+        fakeMatriz.append(invVar)
+    return fakeMatriz       
+
+def createColumnsMatrice(matrice1, matrice2):
+    colunas = []
+    colunas2 = []
+    for i in range(len(matrice1)):
+        col = []
+        for j in matrice1:
+            col.append(j[i])
+        colunas.append(col)
+
+    for i in range(len(matrice2)):
+        col = []
+        for j in matrice2:
+            col.append(j[i])
+        colunas2.append(col)
+    return colunas, colunas2        
