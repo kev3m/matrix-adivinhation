@@ -54,13 +54,10 @@ def returnWinnerPlay(p1P, p2P, roundWinner, biggerORsmaller, biggerORsmaller2):
             return p1P, p2P, biggerORsmaller, biggerORsmaller2 
 
 # Retorna o(s) número(s) a serem substituidos na matriz falsa
-
-
-
-
 def returnNumToSwap(winnerPlay, winnerPlayCase,bigger_or_smaller, bigger_or_smaller2,coluna,playsTab, linha):
     linha = linha.copy()
     if winnerPlay == 1 or winnerPlay == 4:
+        #Para casos de escolha da coluna
         if winnerPlayCase[0] == 'c':
             indexcolumn = playsTab[0].index(winnerPlayCase)
             if winnerPlay == 1:
@@ -71,9 +68,10 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,bigger_or_smaller, bigger_or_smal
                     swapNum = min(coluna[indexcolumn])
                     coluna[indexcolumn].remove(swapNum)
             elif winnerPlay == 4:
-                #Não da pra usar pop pois remove a matriz               
+                #Não da pra usar pop pois remove a matriz, e neste caso removemos apenas os números dentro da matriz               
                 swapNum = coluna[indexcolumn].copy()  
-                coluna[indexcolumn].clear()        
+                coluna[indexcolumn].clear()
+        #Para casos de escolha da lista                
         elif winnerPlayCase[0] == 'l':
             indexcolumn = playsTab[1].index(winnerPlayCase)
             if winnerPlay == 1:

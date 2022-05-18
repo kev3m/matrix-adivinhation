@@ -1,3 +1,12 @@
+'''Autor: Keven Coutinho Crisostomo
+Componente Curricular: Algoritmos I
+Concluido em: 18/05/2022
+Declaro que este código foi elaborado por mim de forma individual e não contém nenhum
+trecho de código de outro colega ou de outro autor, tais como provindos de livros e
+apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código
+de outra autoria que não a minha está destacado com uma citação para o autor e a fonte
+do código, e estou ciente que estes trechos não serão considerados para fins de avaliação.
+'''
 import os
 #Funções responsáveis por gerar as matrizes que serão utilizadas na partida.
 from functions.matricesGenerator import createMatrice, createFakeMatrice, createColumnsMatrice
@@ -39,15 +48,12 @@ def clearTerminal():
     elif os.name == 'posix':
         return os.system('clear')
         
+#Recebe o histórico da rodada
 def statusReceiver(p1P,p1Sum, p2P, p2Sum,statsTab):
     statsTab['Jogador 1'][1][0].append(p1P)
     statsTab['Jogador 1'][1][1].append(p1Sum)
     statsTab['Jogador 2'][1][0].append(p2P)
     statsTab['Jogador 2'][1][1].append(p2Sum)
-
-
-        
-    
 
 #Iniciando o game
 menu = 0
@@ -99,6 +105,7 @@ while menu != 3:
 ➪ '''))
         clearTerminal()
         if quantTab == 2:
+            quantTab -= 1
             print('''
 ============================================  
  ________________
@@ -111,7 +118,8 @@ while menu != 3:
 /     づ    disponível no momento   
 ============================================  
             ''')
-            quantTab == 1
+            
+
         difficulty = int(input('''
 ========= Selecione a dificuldade ==========
 
@@ -133,7 +141,6 @@ while menu != 3:
     
 ============================================ 
 ➪ '''))
-
 
         finalizar = int(input('''
 ==== Selecione o modo de encerramento ======      
@@ -179,7 +186,7 @@ while menu != 3:
     #Cópia da matriz para remover os números
     lines = list(map(list, board))
     print(board)
-    #Cópia da matriz invertida para remover os números
+    #Cópia da matriz invertida(colunas viram linhas) para remover os números
     column, column2 = createColumnsMatrice(board, board2)
     
     sumtab = sumMatrice(quantTab, difficulty, board, board2)
@@ -263,7 +270,7 @@ while menu != 3:
                 fakeMatrice = fakematr
                 
                 print(f'''
- ======================== Status da rodada ===============================    
+ ====================== Status da rodada {contadorRodadas + 1} ===============================    
                 ''')
                 if roundWin == 1:
                     print('O jogador 1 foi o vencedor da rodada')
@@ -322,26 +329,48 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 contadorRodadas += 1
         elif finalizar == 2:   
             while fakeMatrice != board:
+                print(f'''
+========================== Round {contadorRodadas + 1} ========================
+                ''')
                 p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                if difficulty == 3:
+                    while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3':
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                elif difficulty == 4:
+                    while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4': 
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                elif difficulty == 5:
+                    while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'c5' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4' and p1Play != 'l5': 
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
+                
                 p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
+                
                 p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
+                if difficulty == 3:
+                    while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3':
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                elif difficulty == 4:
+                    while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4': 
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                elif difficulty == 5:
+                    while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'c5' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4' and p2Play != 'l5': 
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
+               
                 p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
                 p1pTabel, p2pTabel = assignTableValues(p1Play,p2Play,sumtab)
                 interval1, interval2,biggerORsmaller, biggerORsmaller2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
                 roundWin, bigger_or_smaller = roundWinner(interval1,interval2,biggerORsmaller,biggerORsmaller2)
-
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
-                
                 winnerplay, moreOrLess = returnWinnerPlay(p1Play, p2Play, roundWin, biggerORsmaller, biggerORsmaller2)
-                numToSwap = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
+                numToSwap, matrizLimpa = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
                 matind, numind = searchNumIndexInMainBoard(board,numToSwap)
+                print(board)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
                 
-                
                 print(f'''
-        ===========Status da rodada===========    
+ ======================== Status da rodada ===============================    
                 ''')
                 if roundWin == 1:
                     print('O jogador 1 foi o vencedor da rodada')
@@ -365,41 +394,41 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                     gameStats['Jogador 2'][0][1] += 1
 
                 elif roundWin == 4:
-                    print('O jogador 1 acertou a soma em cheio! Todas as casas serão reveladas')
-
-                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+                    print('O jogador 1 acertou a soma em cheio! Todas as casas da respectiva linha/coluna serão reveladas')
+                    gameStats['Jogador 1'][0][1] += len(numToSwap)
                 elif roundWin == 5:
-                    print('O jogador 2 acertou a soma em cheio! Todas as casas serão reveladas')
+                    print('O jogador 2 acertou a soma em cheio! Todas as casas da respectiva linha/coluna serão reveladas')
+                    gameStats['Jogador 2'][0][1] += len(numToSwap)
                 elif roundWin == 6:
                     print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
-                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
-                
+                print('')
                 for i in fakematr:
                     print(i)
 
                 print(f'''
-    {gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
-    {gameStats['Jogador 2'][0][0]} | Possui {gameStats['Jogador 2'][0][1]} Casas Reveladas       
+{gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
+{gameStats['Jogador 2'][0][0]} | Possui {gameStats['Jogador 2'][0][1]} Casas Reveladas       
                 ''')
 
                 for i in range(len(gameStats['Jogador 1'][1][0])):
                     quadPlay = gameStats['Jogador 1'][1][0][i]
                     numSumPlay = gameStats['Jogador 1'][1][1][i]
                     print(f'''
-    {i + 1}º Rodada | {gameStats['Jogador 1'][0][0]}
-    Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
+{i + 1}º Rodada | {gameStats['Jogador 1'][0][0]}
+Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
                 for i in range(len(gameStats['Jogador 2'][1][0])):
                     quadPlay = gameStats['Jogador 2'][1][0][i]
                     numSumPlay = gameStats['Jogador 2'][1][1][i]
                     print(f'''
-    {i + 1}º Rodada | {gameStats['Jogador 2'][0][0]}
-    Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
+{i + 1}º Rodada | {gameStats['Jogador 2'][0][0]}
+Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
+                contadorRodadas += 1
 
         if gameStats['Jogador 1'][0][1] > gameStats['Jogador 2'][0][1]:
             print(f'''
 ===========Fim do jogo=========== 
 
-{gameStats['Jogador 1'][0][0]} saiu vitorioso!
+{gameStats['Jogador 1'][0][0]} saiu vitorioso com {gameStats['Jogador 1'][0][1]} casas reveladas
 
 ===========Fim do jogo=========== 
 ''')
@@ -407,7 +436,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
             print(f'''
 ===========Fim do jogo=========== 
 
-{gameStats['Jogador 2'][0][0]} saiu vitorioso!
+{gameStats['Jogador 2'][0][0]} saiu vitorioso! com {gameStats['Jogador 2'][0][1]} casas reveladas
 
 ===========Fim do jogo=========== 
 ''')
@@ -415,14 +444,10 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
             print(f'''
 ===========Fim do jogo=========== 
 
-Houve um empate,
+Houve um empate! O número de casas reveladas é o mesmo
 
 ===========Fim do jogo=========== 
 ''')
-print('fim')
-print(gameConfigs)
-print(gameStats)
-print(board)
-print(board2)
+
 
 
