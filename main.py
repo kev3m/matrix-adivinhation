@@ -19,6 +19,7 @@ from functions.matrixView import searchNumIndexInMainBoard, tableSwap
 
 gameConfigs = {'Tabuleiros': 0, 'difficulty': 0, 'Encerrar': 0} #Dif = (F,M OU D)
 gameStats = { 'Jogador 1': [['Nome', 0],[[], []]], 'Jogador 2': [['Nome', 0],[[], []]]}
+
 #gameStats = { 'Jogador X/Y': [['Nome do jogador', Pontuação do jogador],[[Linha/Coluna selecionada], [Chute da soma]]]}
 
 def receiveConfigs(boardNumbers,difficulty, closure, roundsNum) :
@@ -235,26 +236,26 @@ while menu != 3:
                 
                 if difficulty == 3:
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3':
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
                 elif difficulty == 4:
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4': 
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
                 elif difficulty == 5:
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'c5' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4' and p1Play != 'l5': 
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
                 
                 p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
                 
                 p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
                 if difficulty == 3:
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3':
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
                 elif difficulty == 4:
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4': 
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
                 elif difficulty == 5:
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'c5' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4' and p2Play != 'l5': 
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
                
                 p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
@@ -335,26 +336,26 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 p1Play = input(f'''{gameStats['Jogador 1'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
                 if difficulty == 3:
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3':
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
                 elif difficulty == 4:
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4': 
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
                 elif difficulty == 5:
                     while p1Play != 'c1' and p1Play != 'c2' and p1Play != 'c3' and p1Play != 'c4' and p1Play != 'c5' and p1Play != 'l1' and p1Play != 'l2' and p1Play != 'l3' and p1Play != 'l4' and p1Play != 'l5': 
-                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
+                        p1Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
                 
                 p1PlaySum = int(input(f'''{gameStats['Jogador 1'][0][0]} | Digite o valor que deseja chutar: '''))
                 
                 p2Play = input(f'''{gameStats['Jogador 2'][0][0]} | Digite a linha ou coluna que deseja chutar o valor: ''')
                 if difficulty == 3:
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3':
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c3 ou l3|: ''')
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c3 ou l3|: ''')
                 elif difficulty == 4:
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4': 
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c4 ou l4|: ''')
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c4 ou l4|: ''')
                 elif difficulty == 5:
                     while p2Play != 'c1' and p2Play != 'c2' and p2Play != 'c3' and p2Play != 'c4' and p2Play != 'c5' and p2Play != 'l1' and p2Play != 'l2' and p2Play != 'l3' and p2Play != 'l4' and p2Play != 'l5': 
-                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a difficulty escolhida |Até c5 ou l5|: ''')
+                        p2Play = input(f'''Jogada inválida | Digite a linha ou coluna conforme a dificuldade escolhida |Até c5 ou l5|: ''')
                
                 p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 

@@ -28,9 +28,8 @@ def roundWinner(p1P, p2P,biggerORsmaller, biggerORsmaller2):
     #BiggerORsmaller | Parâmetro que recebe se determinada chute é maior ou menor que a soma
     if p1P < p2P and p1P != 0:
         return 1, biggerORsmaller
-    elif p1P > p2P:
+    elif p1P > p2P and p2P != 0:
         return 2, biggerORsmaller2
-       
     elif p1P == p2P and p1P != 0 and p2P != 0:
         biggerORsmaller = biggerORsmaller2 = 'Mesma aproximação'
         return 3, biggerORsmaller, biggerORsmaller2
