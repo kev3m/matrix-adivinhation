@@ -33,15 +33,15 @@ def roundWinner(p1P, p2P,biggerORsmaller, biggerORsmaller2):
     elif p1P == p2P and p1P != 0 and p2P != 0:
         biggerORsmaller = biggerORsmaller2 = 'Mesma aproximação'
         return 3, biggerORsmaller, biggerORsmaller2
-    elif p1P == 0:
+    elif p1P == 0 and p2P != 0:
         biggerORsmaller = 'P1 Acertou a soma'
         return 4, biggerORsmaller
-    elif p2P == 0:
+    elif p2P == 0 and p1P != 0:
         biggerORsmaller2 = 'P2 Acertou a soma'
         return 5, biggerORsmaller2
     elif p1P == 0 and p1P == 0:
         biggerORsmaller = biggerORsmaller2 = 'Ambos acertaram a soma'
-        return 6, biggerORsmaller, biggerORsmaller2
+        return 6, biggerORsmaller
 
 #Recebe o caso de vitória e retorna a jogada vencedora
 def returnWinnerPlay(p1P, p2P, roundWinner, biggerORsmaller, biggerORsmaller2):
@@ -49,12 +49,19 @@ def returnWinnerPlay(p1P, p2P, roundWinner, biggerORsmaller, biggerORsmaller2):
             return p1P, biggerORsmaller
         elif roundWinner == 2 or roundWinner == 5:
             return p2P, biggerORsmaller2
-        elif roundWinner == 3 or roundWinner == 6:
-            return p1P, p2P, biggerORsmaller, biggerORsmaller2 
+        elif roundWinner == 3:
+            p1P = [p1P, p2P]
+            biggerORsmaller = [biggerORsmaller,biggerORsmaller2]
+            return p1P, biggerORsmaller
+        elif roundWinner == 6:
+            p1P = [p1P, p2P]
+            return p1P, biggerORsmaller
+
 
 # Retorna o(s) número(s) a serem substituidos na matriz falsa
 def returnNumToSwap(winnerPlay, winnerPlayCase,bigger_or_smaller, bigger_or_smaller2,coluna,playsTab, linha):
     linha = linha.copy()
+    swaplistPont = []
     if winnerPlay == 1 or winnerPlay == 4:
         #Para casos de escolha da coluna
         if winnerPlayCase[0] == 'c':
@@ -83,7 +90,7 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,bigger_or_smaller, bigger_or_smal
             elif winnerPlay == 4:
                 swapNum = linha[indexcolumn].copy()  
                 linha[indexcolumn].clear()    
-        return swapNum, linha
+        return swapNum, swaplistPont
 
     elif winnerPlay == 2 or winnerPlay == 5:
         if winnerPlayCase[0] == 'c':
@@ -111,4 +118,26 @@ def returnNumToSwap(winnerPlay, winnerPlayCase,bigger_or_smaller, bigger_or_smal
             elif winnerPlay == 5:
                 swapNum = linha[indexcolumn].copy()  
                 linha[indexcolumn].clear() 
-        return swapNum, linha
+        return swapNum, swaplistPont
+    
+    elif winnerPlay == 6:
+        swaplist = []
+        for i in winnerPlayCase:
+            if i[0] == 'c':
+                indexcolumn = playsTab[0].index(i)
+                    #Não da pra usar pop pois remove a matriz, e neste caso removemos apenas os números dentro da matriz               
+                swapNum = coluna[indexcolumn].copy()  
+                coluna[indexcolumn].clear()
+                swaplist.append(swapNum)
+                swaplistPont.append(swapNum)
+                for i in swapNum:   
+                    swaplist.append(i)
+            #Para casos de escolha da lista                
+            elif i[0] == 'l':
+                indexcolumn = playsTab[1].index(i)
+                swapNum = linha[indexcolumn].copy()  
+                linha[indexcolumn].clear() 
+                swaplistPont.append(swapNum)
+                for i in swapNum:   
+                    swaplist.append(i)
+        return swaplist, swaplistPont

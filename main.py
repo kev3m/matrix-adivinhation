@@ -27,8 +27,6 @@ def receiveConfigs(boardNumbers,difficulty, closure, roundsNum) :
         gameConfigs['Tabuleiros'] = 1
     elif boardNumbers == 2:
         gameConfigs['Tabuleiros'] = 2
-    else:
-        return 'O jogo só pode ser jogado com 1 ou 2 tabuleiros! Digite uma quantidade válida.'
 
     if difficulty == 'F':
         gameConfigs['difficulty'] = 3
@@ -41,7 +39,7 @@ def receiveConfigs(boardNumbers,difficulty, closure, roundsNum) :
         gameConfigs['Encerrar'] = roundsNum
     elif closure == 2:
         gameConfigs['Encerrar'] = closure
-    return boardNumbers, difficulty, closure, roundsNum
+    
 
 def clearTerminal():
     if os.name == 'nt':
@@ -60,120 +58,124 @@ def statusReceiver(p1P,p1Sum, p2P, p2Sum,statsTab):
 menu = 0
 while menu != 3:
     menu = int(input('''
-========== Selecione uma opção =============    
-
-    [1] - Iniciar 
-    [2] - Instruções
-    [3] - Sair
-
-============================================      
+============ Selecione uma opção ===============    
++                                            +   
++    [1] - Iniciar                           +
++    [2] - Instruções                        +
++    [3] - Sair                              +    
++                                            +        
+================================================      
 ➪ '''))
     while menu == 2:
         print('Aqui jás instruções')
         menu = int(input('''
-========== Selecione uma opção =============    
-
-    [1] - Iniciar 
-    [2] - Instruções
-    [3] - Sair
-
-============================================      
+============ Selecione uma opção ===============    
++                                            +   
++    [1] - Iniciar                           +
++    [2] - Instruções                        +
++    [3] - Sair                              +    
++                                            +        
+================================================         
 ➪ '''))
     clearTerminal()
         
     #Configurando o game
     if menu == 1:
         quantTab = int(input('''
-=========== Configurando o jogo ============         
-=== Selecione a quantidade de tabuleiros ===
-
-    [1] - Tabuleiro único
-    [2] - 1 Tabuleiro para cada jogador
-    
-============================================  
+==================== Configurando o jogo =======================         
++        === Selecione a quantidade de tabuleiros ===          +  
++                                                              +  
++    [1] - Tabuleiro único                                     +   
++    [2] - 2 Tabuleiros (1 Tabuleiro para cada jogador)        +    
++                                                              +  
+================================================================  
 ➪ '''))
         clearTerminal()
         while quantTab != 1 and quantTab != 2:
             print('Falha na matrix! Entrada inválida')
             quantTab = int(input('''
-=========== Configurando o jogo ============         
-=== Selecione a quantidade de tabuleiros ===
-
-    [1] - Tabuleiro único
-    [2] - 1 Tabuleiro para cada jogador
-    
-============================================  
+==================== Configurando o jogo =======================         
++        === Selecione a quantidade de tabuleiros ===          + 
++                                                              +  
++    [1] - Tabuleiro único                                     +    
++    [2] - 2 Tabuleiros (1 Tabuleiro para cada jogador)        +  
++                                                              +  
+================================================================    
 ➪ '''))
         clearTerminal()
         if quantTab == 2:
             quantTab -= 1
             print('''
-============================================  
- ________________
-|                |
-|    Falha na    | 
-|     Matrix     |
-|________________| 
- ∧＿∧  ||   Pedimos perdão!
-( ´ω`) ||   Apenas um tabuleiro está   
-/     づ    disponível no momento   
-============================================  
+================================================
++                                              +  
++  ________________                            + 
++ |                |                           +
++ |    Falha na    |                           +  
++ |     Matrix     |                           + 
++ |________________|                           + 
++  ∧＿∧  +   Pedimos perdão!                   +
++ ( ´ω`) +   Apenas um tabuleiro está          + 
++ /     づ    disponível no momento            +
+================================================  
             ''')
             
 
         difficulty = int(input('''
-========= Selecione a dificuldade ==========
-
-    [3] - Fácil (3x3)
-    [4] - Médil (4x4)
-    [5] - Difícil (5x5) 
-    
-============================================     
+========= Selecione a dificuldade ===========
++                                           + 
++    [3] - Fácil (3x3)                      + 
++    [4] - Médil (4x4)                      +    
++    [5] - Difícil (5x5)                    + 
++                                           + 
+=============================================     
 ➪ '''))
         clearTerminal()
         while difficulty != 3 and difficulty != 4 and difficulty != 5:
             print('Falha na matrix! dificuldade inválida')
             difficulty = int(input('''
-========= Selecione a dificuldade ==========
-
-    [3] - Fácil (3x3)
-    [4] - Médil (4x4)
-    [5] - Difícil (5x5) 
-    
-============================================ 
+========= Selecione a dificuldade ===========
++                                           + 
++    [3] - Fácil (3x3)                      + 
++    [4] - Médil (4x4)                      +    
++    [5] - Difícil (5x5)                    + 
++                                           + 
+=============================================  
 ➪ '''))
 
         finalizar = int(input('''
-==== Selecione o modo de encerramento ======      
-               da partida
-
-    [1] - Por número de rodadas
-    [2] - Ao revelar completamente um dos tabuleiros
-
-============================================
+============= Selecione o modo de encerramento ===========     
++                    da partida                          +
++                                                        +
++    [1] - Por número de rodadas                         + 
++    [2] - Ao revelar completamente um dos tabuleiros    +
++                                                        +
+==========================================================
 ➪ '''))
         clearTerminal()
         while finalizar != 1 and finalizar != 2:
             print('Falha na matrix! Encerramento inválido')
             finalizar = int(input('''
-==== Selecione o modo de encerramento ======      
-               da partida
-
-    [1] - Por número de rodadas
-    [2] - Ao revelar completamente um dos tabuleiros
-
-============================================
+============= Selecione o modo de encerramento ===========     
++                    da partida                          +
++                                                        +
++    [1] - Por número de rodadas                         + 
++    [2] - Ao revelar completamente um dos tabuleiros    +
++                                                        +
+==========================================================
 ➪ '''))
 
         if finalizar == 1:
             numRodadas = int(input('''
-======= Digite o número de rodadas =========
+=============================================
++      Digite o número de rodadas           +
+=============================================         
 ➪ '''))       
             while numRodadas % 2 == 0:
                 print('Falha na matrix! O número de rodadas deve ser impar para evitar impates.')
                 numRodadas = int(input('''
-
-======= Digite o número de rodadas =========
+=============================================
++      Digite o número de rodadas           +
+=============================================   
 ➪ '''))    
         elif finalizar == 2:
             numRodadas = ''
@@ -186,47 +188,51 @@ while menu != 3:
 
     #Cópia da matriz para remover os números
     lines = list(map(list, board))
-    print(board)
     #Cópia da matriz invertida(colunas viram linhas) para remover os números
     column, column2 = createColumnsMatrice(board, board2)
-    
     sumtab = sumMatrice(quantTab, difficulty, board, board2)
     fakeMatrice = createFakeMatrice(difficulty)
     jogador1Nick = input('''
-  
-====== Digite o nickname do jogador 1 ====== 
+=============================================
++      Digite o nickname do jogador 1       +
+=============================================    
 ➪ ''')
     gameStats['Jogador 1'][0][0] = jogador1Nick
     jogador2Nick = input('''
-
-====== Digite o nickname do jogador 2 ====== 
+=============================================
++      Digite o nickname do jogador 2       +
+=============================================  
 ➪ ''')
-    print('''
-=====================================''')
     gameStats['Jogador 2'][0][0] = jogador2Nick
     menu = 3
     clearTerminal()
     #Iniciando o jogo com um tabuleiro
     if gameConfigs['Tabuleiros'] == 1:
-        print(f'''O jogo foi iniciado com um tabuleiro para dois jogadores
-        Boa sorte {gameStats['Jogador 1'][0][0]} e {gameStats['Jogador 2'][0][0]}''')
-        #if gameConfigs['Encerrar'] == 2:
         print(f'''
-================== Tabela guia para escolha das opções =========================
-
-        Fácil                   Médio                       Díficil
-    -------------         -----------------         ---------------------
-    | x | x | x | > l1    | x | x | x | x | > l1    | x | x | x | x | x | > l1
-    | x | x | x | > l2    | x | x | x | x | > l2    | x | x | x | x | x | > l2
-    | x | x | x | > l3    | x | x | x | x | > l3    | x | x | x | x | x | > l3
-    -------------         | x | x | x | x | > l4    | x | x | x | x | x | > l4
-     ^   ^   ^            -----------------         | x | x | x | x | x | > l5
-     c1  c2  c3             ^   ^   ^   ^           ---------------------
-                           c1  c2  c3  c4             ^   ^   ^   ^   ^
-                                                      c1  c2  c3  c4  c5    
-
-===============================================================================
+================= O jogo foi iniciado com um tabuleiro para dois jogadores =============
++                                                                                      +  
+                                Boa sorte {gameStats['Jogador 1'][0][0]} e {gameStats['Jogador 2'][0][0]}                
++                                                                                      +   
+========================================================================================    
+    ''')
+        
+        print(f'''
+======================= Tabela guia para escolha das opções ==========================
++                                                                                    +
++        Fácil                   Médio                       Díficil                 +
++    -------------         -----------------         ---------------------           +    
++    | x | x | x | > l1    | x | x | x | x | > l1    | x | x | x | x | x | > l1      +    
++    | x | x | x | > l2    | x | x | x | x | > l2    | x | x | x | x | x | > l2      +    
++    | x | x | x | > l3    | x | x | x | x | > l3    | x | x | x | x | x | > l3      +    
++    -------------         | x | x | x | x | > l4    | x | x | x | x | x | > l4      +   
++     ^   ^   ^            -----------------         | x | x | x | x | x | > l5      +
++     c1  c2  c3             ^   ^   ^   ^           ---------------------           +
++                           c1  c2  c3  c4             ^   ^   ^   ^   ^             +
++                                                      c1  c2  c3  c4  c5            +
++                                                                                    +
+======================================================================================
 ''')    
+        print(board)
         if finalizar == 1:
             while contadorRodadas < gameConfigs['Encerrar']:
                 print(f'''
@@ -264,7 +270,7 @@ while menu != 3:
                 roundWin, bigger_or_smaller = roundWinner(interval1,interval2,biggerORsmaller,biggerORsmaller2)
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
                 winnerplay, moreOrLess = returnWinnerPlay(p1Play, p2Play, roundWin, biggerORsmaller, biggerORsmaller2)
-                numToSwap, matrizLimpa = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
+                numToSwap, swapListPoint = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
                 matind, numind = searchNumIndexInMainBoard(board,numToSwap)
                 print(board)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
@@ -297,16 +303,16 @@ while menu != 3:
                 elif roundWin == 4:
                     print('O jogador 1 acertou a soma em cheio! Todas as casas da respectiva linha/coluna serão reveladas')
                     gameStats['Jogador 1'][0][1] += len(numToSwap)
-                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
                 elif roundWin == 5:
                     print('O jogador 2 acertou a soma em cheio! Todas as casas da respectiva linha/coluna serão reveladas')
                     gameStats['Jogador 2'][0][1] += len(numToSwap)
                 elif roundWin == 6:
                     print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
-                #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO #########FAZER PONTUAÇÃO
+                    gameStats['Jogador 1'][0][1] += len(swapListPoint[0])
+                    gameStats['Jogador 2'][0][1] += len(swapListPoint[1])
                 print('')
-                for i in fakematr:
-                    print(i)
+                
+
 
                 print(f'''
 {gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
@@ -364,7 +370,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 roundWin, bigger_or_smaller = roundWinner(interval1,interval2,biggerORsmaller,biggerORsmaller2)
                 statusReceiver(p1Play, p1PlaySum, p2Play, p2PlaySum, gameStats)
                 winnerplay, moreOrLess = returnWinnerPlay(p1Play, p2Play, roundWin, biggerORsmaller, biggerORsmaller2)
-                numToSwap, matrizLimpa = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
+                numToSwap, swapListPoint = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
                 matind, numind = searchNumIndexInMainBoard(board,numToSwap)
                 print(board)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
@@ -402,6 +408,8 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                     gameStats['Jogador 2'][0][1] += len(numToSwap)
                 elif roundWin == 6:
                     print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
+                    gameStats['Jogador 1'][0][1] += len(swapListPoint[0])
+                    gameStats['Jogador 2'][0][1] += len(swapListPoint[1])
                 print('')
                 for i in fakematr:
                     print(i)
