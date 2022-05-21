@@ -1,4 +1,4 @@
-#Recebe os valores das somas retornados por AssignTableValues, os compora com os chutes dos jogadores e retorna o intervalo entre os dois.
+#Recebe os valores das somas retornados por AssignTableValues, os compara com os chutes dos jogadores e retorna o intervalo entre os dois.
 def intervalVerifier(p1P,p1Sum, p2P, p2Sum):
     # p1P = Num Original | P1Sum = Chute escolhido pelo user
     # bigger_or_smaller = False se o chute for menor que a soma. Do contrário recebe True

@@ -280,7 +280,7 @@ while menu != 3:
  ====================== Status da rodada {contadorRodadas + 1} ===============================    
                 ''')
                 if roundWin == 1:
-                    print('O jogador 1 foi o vencedor da rodada')
+                    print(f'''{gameStats['Jogador 1'][0][0]} foi o vencedor da rodada''')
                     gameStats['Jogador 1'][0][1] += 1
                     if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
@@ -288,7 +288,7 @@ while menu != 3:
                         print('O valor chutado é menor que a soma') 
 
                 elif roundWin == 2:
-                    print('O jogador 2 foi o vencedor da rodada')
+                    print(f'''{gameStats['Jogador 2'][0][0]} foi o vencedor da rodada''')
                     gameStats['Jogador 2'][0][1] += 1
                     if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
@@ -383,7 +383,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
  ======================== Status da rodada ===============================    
                 ''')
                 if roundWin == 1:
-                    print('O jogador 1 foi o vencedor da rodada')
+                    print(f'''{gameStats['Jogador 1'][0][0]} foi o vencedor da rodada''')
                     gameStats['Jogador 1'][0][1] += 1
                     if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
@@ -391,7 +391,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                         print('O valor chutado é menor que a soma') 
 
                 elif roundWin == 2:
-                    print('O jogador 2 foi o vencedor da rodada')
+                    print(f'''{gameStats['Jogador 2'][0][0]} foi o vencedor da rodada''')
                     gameStats['Jogador 2'][0][1] += 1
                     if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
