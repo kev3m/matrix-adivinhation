@@ -311,8 +311,11 @@ while menu != 3:
                     gameStats['Jogador 1'][0][1] += len(swapListPoint[0])
                     gameStats['Jogador 2'][0][1] += len(swapListPoint[1])
                 print('')
-                
 
+                for i in fakematr:
+                    for j in i:
+                        print(f'| {j} |', end='')
+                    print('\n')
 
                 print(f'''
 {gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
@@ -411,8 +414,11 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                     gameStats['Jogador 1'][0][1] += len(swapListPoint[0])
                     gameStats['Jogador 2'][0][1] += len(swapListPoint[1])
                 print('')
+                
                 for i in fakematr:
-                    print(i)
+                    for j in i:
+                        print(f'| {j} |', end='')
+                    print('\n')
 
                 print(f'''
 {gameStats['Jogador 1'][0][0]} | Possui {gameStats['Jogador 1'][0][1]} Casas Reveladas       
