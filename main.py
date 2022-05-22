@@ -1,6 +1,6 @@
 '''Autor: Keven Coutinho Crisostomo
 Componente Curricular: Algoritmos I
-Concluido em: 18/05/2022
+Concluido em: 22/05/2022
 Declaro que este código foi elaborado por mim de forma individual e não contém nenhum
 trecho de código de outro colega ou de outro autor, tais como provindos de livros e
 apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código
@@ -92,7 +92,19 @@ while menu != 3:
 ➪ '''))
         clearTerminal()
         while quantTab != 1 and quantTab != 2:
-            print('Falha na matrix! Entrada inválida')
+            print('''
+================================================
++                                              +  
++    ________________                          + 
++   |                |                         +
++   |    Falha na    |                         +  
++   |     Matrix     |                         + 
++   |________________|                         + 
++    ∧＿∧  ||   Entrada inválida!              +
++   (⌐■_■) ||   Não tente quebrar o código.    + 
++   /     づ                                   +
+================================================  
+            ''')
             quantTab = int(input('''
 ==================== Configurando o jogo =======================         
 +        === Selecione a quantidade de tabuleiros ===          + 
@@ -108,14 +120,14 @@ while menu != 3:
             print('''
 ================================================
 +                                              +  
-+  ________________                            + 
-+ |                |                           +
-+ |    Falha na    |                           +  
-+ |     Matrix     |                           + 
-+ |________________|                           + 
-+  ∧＿∧  +   Pedimos perdão!                   +
-+ ( ´ω`) +   Apenas um tabuleiro está          + 
-+ /     づ    disponível no momento            +
++    ________________                          + 
++   |                |                         +
++   |    Falha na    |                         +  
++   |     Matrix     |                         + 
++   |________________|                         + 
++    ∧＿∧  ||   Pedimos perdão!                +
++   (⌐■_■) ||   Apenas um tabuleiro está       + 
++   /     づ    disponível no momento          +
 ================================================  
             ''')
             
@@ -131,7 +143,19 @@ while menu != 3:
 ➪ '''))
         clearTerminal()
         while difficulty != 3 and difficulty != 4 and difficulty != 5:
-            print('Falha na matrix! dificuldade inválida')
+            print('''
+================================================
++                                              +  
++    ________________                          + 
++   |                |                         +
++   |    Falha na    |                         +  
++   |     Matrix     |                         + 
++   |________________|                         + 
++    ∧＿∧  ||   Dificuldade inválida!          +
++   (⌐■_■) ||   Digite de acordo com as opções + 
++   /     づ    fornecidas                     +
+================================================  
+            ''')
             difficulty = int(input('''
 ========= Selecione a dificuldade ===========
 +                                           + 
@@ -153,7 +177,19 @@ while menu != 3:
 ➪ '''))
         clearTerminal()
         while finalizar != 1 and finalizar != 2:
-            print('Falha na matrix! Encerramento inválido')
+            print('''
+================================================
++                                              +  
++    ________________                          + 
++   |                |                         +
++   |    Falha na    |                         +  
++   |     Matrix     |                         + 
++   |________________|                         + 
++    ∧＿∧  ||   Encerramento inválido!         +
++   (⌐■_■) ||   Digite de acordo com as opções + 
++   /     づ    fornecidas                     +
+================================================  
+            ''')
             finalizar = int(input('''
 ============= Selecione o modo de encerramento ===========     
 +                    da partida                          +
@@ -167,25 +203,38 @@ while menu != 3:
         if finalizar == 1:
             numRodadas = int(input('''
 =============================================
-+      Digite o número de rodadas           +
++         Digite o número de rodadas        +
 =============================================         
 ➪ '''))       
-            while numRodadas % 2 == 0:
-                print('Falha na matrix! O número de rodadas deve ser impar para evitar impates.')
+            while numRodadas % 2 == 0 or numRodadas < 0:
+                print('''
+================================================
++                                              +  
++    ________________                          + 
++   |                |                         +
++   |    Falha na    |                         +  
++   |     Matrix     |                         + 
++   |________________|                         + 
++    ∧＿∧  ||   O número de rodadas deve ser   +
++   (⌐■_■) ||   impar e maior que zero.        + 
++   /     づ    Pare de quebrar o código!      +
+================================================  
+            ''')
                 numRodadas = int(input('''
 =============================================
-+      Digite o número de rodadas           +
++         Digite o número de rodadas        +
 =============================================   
 ➪ '''))    
         elif finalizar == 2:
             numRodadas = ''
     #Retornando as configurações para o dicionário
     clearTerminal()
-    plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']] #Utlizada para servir de referência para a função que retorna o(s) número(s) a ser(em) exibido(s)
+    #Utlizada para servir de referência para a função que retorna o(s) número(s) a ser(em) exibido(s)
+    plays = [['c1', 'c2', 'c3', 'c4', 'c5'], ['l1', 'l2', 'l3', 'l4', 'l5']] 
     contadorRodadas = 0
     receiveConfigs(quantTab, difficulty,finalizar, numRodadas)
+    
     board, board2 = createMatrice(quantTab,difficulty)
-
     #Cópia da matriz para remover os números
     lines = list(map(list, board))
     #Cópia da matriz invertida(colunas viram linhas) para remover os números
@@ -232,7 +281,12 @@ while menu != 3:
 +                                                                                    +
 ======================================================================================
 ''')    
-        print(board)
+        print('Matriz oculta para correção do código')
+        for i in board:
+            for j in i:
+                print(f'| {j} |', end='')
+            print('\n')
+
         if finalizar == 1:
             while contadorRodadas < gameConfigs['Encerrar']:
                 print(f'''
@@ -265,6 +319,7 @@ while menu != 3:
                
                 p2PlaySum = int(input(f'''{gameStats['Jogador 2'][0][0]} | Digite o valor que deseja chutar: '''))
 
+
                 p1pTabel, p2pTabel = assignTableValues(p1Play,p2Play,sumtab)
                 interval1, interval2,biggerORsmaller, biggerORsmaller2= intervalVerifier(p1pTabel, p1PlaySum, p2pTabel, p2PlaySum)
                 roundWin, bigger_or_smaller = roundWinner(interval1,interval2,biggerORsmaller,biggerORsmaller2)
@@ -272,7 +327,6 @@ while menu != 3:
                 winnerplay, moreOrLess = returnWinnerPlay(p1Play, p2Play, roundWin, biggerORsmaller, biggerORsmaller2)
                 numToSwap, swapListPoint = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
                 matind, numind = searchNumIndexInMainBoard(board,numToSwap)
-                print(board)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
                 
@@ -280,7 +334,8 @@ while menu != 3:
  ====================== Status da rodada {contadorRodadas + 1} ===============================    
                 ''')
                 if roundWin == 1:
-                    print(f'''{gameStats['Jogador 1'][0][0]} foi o vencedor da rodada''')
+                    print(f'''
+                    {gameStats['Jogador 1'][0][0]} foi o vencedor da rodada''')
                     gameStats['Jogador 1'][0][1] += 1
                     if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
@@ -322,12 +377,14 @@ while menu != 3:
 {gameStats['Jogador 2'][0][0]} | Possui {gameStats['Jogador 2'][0][1]} Casas Reveladas       
                 ''')
 
+                #Percorrer o histórico de jogadas
                 for i in range(len(gameStats['Jogador 1'][1][0])):
                     quadPlay = gameStats['Jogador 1'][1][0][i]
                     numSumPlay = gameStats['Jogador 1'][1][1][i]
                     print(f'''
 {i + 1}º Rodada | {gameStats['Jogador 1'][0][0]}
 Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
+                #Percorrer o histórico de jogadas
                 for i in range(len(gameStats['Jogador 2'][1][0])):
                     quadPlay = gameStats['Jogador 2'][1][0][i]
                     numSumPlay = gameStats['Jogador 2'][1][1][i]
@@ -335,7 +392,7 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
 {i + 1}º Rodada | {gameStats['Jogador 2'][0][0]}
 Escolheu a jogada {quadPlay} de soma {numSumPlay} 
 
-    ''')
+    ''')        #incremento contador
                 contadorRodadas += 1
         elif finalizar == 2:   
             while fakeMatrice != board:
@@ -375,7 +432,6 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                 winnerplay, moreOrLess = returnWinnerPlay(p1Play, p2Play, roundWin, biggerORsmaller, biggerORsmaller2)
                 numToSwap, swapListPoint = returnNumToSwap(roundWin,winnerplay,biggerORsmaller, biggerORsmaller2,column, plays, lines)
                 matind, numind = searchNumIndexInMainBoard(board,numToSwap)
-                print(board)
                 fakematr = tableSwap(numToSwap,fakeMatrice,matind,numind)
                 fakeMatrice = fakematr
                 
@@ -383,7 +439,9 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
  ======================== Status da rodada ===============================    
                 ''')
                 if roundWin == 1:
-                    print(f'''{gameStats['Jogador 1'][0][0]} foi o vencedor da rodada''')
+                    print(f'''
+                    {gameStats['Jogador 1'][0][0]} foi o vencedor da rodada
+                    ''')
                     gameStats['Jogador 1'][0][1] += 1
                     if moreOrLess == True:
                         print('O valor chutado é maior que a soma')    
@@ -413,7 +471,6 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}
                     print('Os dois jogadores acertaram a soma! Verdadeiros mestres da matriz.')
                     gameStats['Jogador 1'][0][1] += len(swapListPoint[0])
                     gameStats['Jogador 2'][0][1] += len(swapListPoint[1])
-                print('')
                 
                 for i in fakematr:
                     for j in i:
@@ -438,31 +495,76 @@ Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
 {i + 1}º Rodada | {gameStats['Jogador 2'][0][0]}
 Escolheu a jogada {quadPlay} de soma {numSumPlay}''')
                 contadorRodadas += 1
-
+        
+        
         if gameStats['Jogador 1'][0][1] > gameStats['Jogador 2'][0][1]:
             print(f'''
-===========Fim do jogo=========== 
-
-{gameStats['Jogador 1'][0][0]} saiu vitorioso com {gameStats['Jogador 1'][0][1]} casas reveladas
-
-===========Fim do jogo=========== 
-''')
+======================== Fim de jogo =============================== 
++                                                                  + 
+        {gameStats['Jogador 1'][0][0]} saiu vitorioso!
+        |{gameStats['Jogador 1'][0][1]}| Casas reveladas
++                                                                  +
+======================== Fim de jogo ===============================
+''')       
+            menu = int(input('''
+================================================
++                                              +  
++    ________________                          + 
++   |                |                         +
++   |    Revanche?   |     [1] - Aceito        +  
++   |                |     [3] - Vou arregar   + 
++   |________________|                         + 
++    ∧＿∧  ||                                  +
++   (⌐■_■) ||                                  +  
++   /     づ                                   +
+================================================  
+            '''))
         elif gameStats['Jogador 1'][0][1] < gameStats['Jogador 2'][0][1]:
+            
             print(f'''
-===========Fim do jogo=========== 
-
-{gameStats['Jogador 2'][0][0]} saiu vitorioso! com {gameStats['Jogador 2'][0][1]} casas reveladas
-
-===========Fim do jogo=========== 
-''')
+======================== Fim de jogo =============================== 
++                                                                  + 
+        {gameStats['Jogador 2'][0][0]} saiu vitorioso!
+        |{gameStats['Jogador 2'][0][1]}| Casas reveladas
++                                                                  +
+======================== Fim de jogo ===============================
+''')    
+            menu = int(input('''
+================================================
++                                              +  
++    ________________                          + 
++   |                |                         +
++   |    Revanche?   |     [1] - Aceito        +  
++   |                |     [3] - Vou arregar   + 
++   |________________|                         + 
++    ∧＿∧  ||                                  +
++   (⌐■_■) ||                                  +  
++   /     づ                                   +
+================================================  
+            '''))
         else:
+            
             print(f'''
-===========Fim do jogo=========== 
-
-Houve um empate! O número de casas reveladas é o mesmo
-
-===========Fim do jogo=========== 
-''')
+======================== Fim de jogo ===============================
++                                                                  + 
++        Houve um empate! O número de casas reveladas é o mesmo    +
++                                                                  + 
+======================== Fim de jogo =============================== 
+''')        
+            menu = int(input('''
+================================================
++                                              +  
++    ________________                          + 
++   |                |                         +
++   |    Revanche?   |     [1] - Aceito        +  
++   |                |     [3] - Vou arregar   + 
++   |________________|                         + 
++    ∧＿∧  ||                                  +
++   (⌐■_■) ||                                  +  
++   /     づ                                   +
+================================================  
+            '''))
+            
 
 
 
